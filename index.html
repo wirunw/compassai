@@ -26,1237 +26,1307 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-    <div id="app" class="container mx-auto p-4 sm:p-6 max-w-5xl">
-        
-        <header class="text-center mb-6 flex flex-col items-center">
-            <div class="flex items-center justify-center">
-                <img src="https://i.postimg.cc/yY1rPJ07/wirun-facbook.png" alt="Logo" class="w-16 h-16 rounded-full mr-4 shadow-md">
-                <div>
-                    <h1 class="text-4xl font-bold text-gray-700 text-left">Compass AI</h1>
-                    <p class="text-gray-500 mt-1 text-left">วางแผนงานอย่างชาญฉลาด จัดลำดับความสำคัญด้วย AI</p>
-                </div>
+    <!-- NEW: Login Screen -->
+    <div id="login-screen" class="fixed inset-0 bg-gray-100 z-50 flex items-center justify-center p-4">
+        <div class="w-full max-w-sm p-8 space-y-6 bg-white rounded-xl shadow-lg">
+            <div class="text-center">
+                <h1 class="text-3xl font-bold text-gray-800">Compass AI</h1>
+                <p class="mt-2 text-gray-500">กรุณาป้อนรหัสผ่านเพื่อเข้าสู่ระบบ</p>
             </div>
-        </header>
-
-        <nav id="view-switcher" class="flex justify-center bg-white p-2 rounded-lg shadow-sm mb-6 space-x-1 sm:space-x-2">
-            <button data-view="daily" class="nav-btn active px-3 sm:px-4 py-2 text-sm font-semibold text-gray-700 rounded-md hover:bg-blue-100">รายวัน</button>
-            <button data-view="weekly" class="nav-btn px-3 sm:px-4 py-2 text-sm font-semibold text-gray-700 rounded-md hover:bg-blue-100">รายสัปดาห์</button>
-            <button data-view="monthly" class="nav-btn px-3 sm:px-4 py-2 text-sm font-semibold text-gray-700 rounded-md hover:bg-blue-100">รายเดือน</button>
-            <button data-view="yearly" class="nav-btn px-3 sm:px-4 py-2 text-sm font-semibold text-gray-700 rounded-md hover:bg-blue-100">รายปี</button>
-            <button data-view="goals" class="nav-btn px-3 sm:px-4 py-2 text-sm font-semibold text-gray-700 rounded-md hover:bg-blue-100">เป้าหมาย</button>
-        </nav>
-        
-        <div id="add-task-wrapper" class="mb-8"></div>
-        
-        <div id="loading" class="text-center my-6 hidden"><p class="text-blue-500">กำลังโหลดข้อมูล...</p></div>
-        <div id="error" class="hidden bg-red-100 text-red-700 p-4 rounded-lg my-4"></div>
-        <div id="success" class="hidden bg-green-100 text-green-700 p-4 rounded-lg my-4"></div>
-
-        <div id="view-container">
-            <div id="view-header" class="flex justify-between items-center mb-4"></div>
-            <div id="task-list-container"></div>
-        </div>
-    </div>
-
-    <!-- Modals Container -->
-    <div id="modal-container">
-        <!-- AI Subtask Suggestions Modal -->
-        <div id="ai-modal" class="modal fixed inset-0 bg-gray-600 bg-opacity-50 h-full w-full hidden items-center justify-center z-50">
-            <div class="relative mx-auto p-6 border w-full max-w-lg shadow-lg rounded-xl bg-white">
-                <h3 class="text-xl font-bold text-gray-800 mb-4">AI แนะนำขั้นตอนย่อย</h3>
-                 <div class="grid grid-cols-2 gap-4 mb-4 p-4 bg-gray-50 rounded-lg">
-                     <div>
-                         <label for="ai-start-date" class="block text-sm font-medium text-gray-700">วันที่เริ่ม</label>
-                         <input type="date" id="ai-start-date" class="mt-1 w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-400 focus:outline-none">
-                     </div>
-                     <div>
-                         <label for="ai-start-time" class="block text-sm font-medium text-gray-700">เวลาเริ่ม</label>
-                         <input type="time" id="ai-start-time" class="mt-1 w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-400 focus:outline-none">
-                     </div>
-                 </div>
-                <div id="ai-suggestions" class="space-y-3 mb-5 max-h-64 overflow-y-auto p-1"></div>
-                <div class="flex justify-end space-x-3">
-                    <button id="ai-cancel-btn" class="bg-gray-200 text-gray-700 font-bold py-2 px-5 rounded-lg hover:bg-gray-300 transition">ยกเลิก</button>
-                    <button id="ai-add-selected-btn" class="bg-purple-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-purple-600 transition">เพิ่มรายการที่เลือก</button>
-                </div>
-            </div>
-        </div>
-        <!-- Add/Edit Goal Modal -->
-        <div id="goal-modal" class="modal fixed inset-0 bg-gray-600 bg-opacity-50 h-full w-full hidden items-center justify-center z-50 overflow-y-auto p-4">
-            <div class="relative mx-auto p-6 border w-full max-w-lg shadow-lg rounded-xl bg-white">
-                <h3 id="goal-modal-title" class="text-xl font-bold text-gray-800 mb-6">เพิ่มเป้าหมายใหม่</h3>
-                <form id="goal-form">
-                    <input type="hidden" id="goal-row-id">
-                    <div class="mb-4">
-                        <label for="goal-title-input" class="block text-sm font-medium text-gray-700 mb-1">ชื่อเป้าหมาย (ร่างแรก)</label>
-                        <input type="text" id="goal-title-input" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="เช่น 'อยากเก่งภาษาอังกฤษขึ้น'" required>
+            <form id="login-form">
+                <div class="space-y-4">
+                    <div>
+                        <input type="password" id="password-input" class="w-full px-4 py-3 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="รหัสผ่าน" required>
                     </div>
-                    <div class="mb-4">
-                        <label for="goal-time-horizon-select" class="block text-sm font-medium text-gray-700 mb-1">ระยะเวลา</label>
-                        <select id="goal-time-horizon-select" class="w-full p-3 border border-gray-300 rounded-lg bg-white status-select">
-                            <option>ระยะสั้น (3-6 เดือน)</option>
-                            <option selected>ระยะกลาง (6-12 เดือน)</option>
-                            <option>ระยะยาว (1-3 ปี)</option>
-                        </select>
-                    </div>
-                    <div class="mb-4">
-                        <label for="goal-description-input" class="block text-sm font-medium text-gray-700 mb-1">คำอธิบาย/เหตุผล (Why?)</label>
-                        <textarea id="goal-description-input" rows="4" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="เช่น 'เพื่อใช้ในการทำงาน และดูหนังได้เข้าใจมากขึ้น'"></textarea>
-                    </div>
-                    <div class="text-center mb-4">
-                        <button type="button" id="smart-goal-btn" class="bg-purple-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-purple-600 transition">
-                            ✨ ช่วยทำให้เป็น SMART Goal
+                    <p id="login-error" class="text-red-500 text-sm text-center hidden">รหัสผ่านไม่ถูกต้อง</p>
+                    <div>
+                        <button type="submit" class="w-full px-4 py-3 font-bold text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+                            เข้าสู่ระบบ
                         </button>
                     </div>
-                    <div id="ai-goal-suggestion-area" class="hidden my-4 p-4 bg-purple-50 border-l-4 border-purple-400 rounded-r-lg">
-                        <!-- AI content will go here -->
-                    </div>
-                    <div class="flex justify-end space-x-3 mt-6">
-                        <button type="button" id="goal-cancel-btn" class="bg-gray-200 text-gray-700 font-bold py-2 px-5 rounded-lg hover:bg-gray-300 transition">ยกเลิก</button>
-                        <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-blue-600 transition">บันทึก</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <!-- Edit Task Modal -->
-        <div id="edit-modal" class="modal fixed inset-0 bg-gray-600 bg-opacity-50 h-full w-full hidden items-center justify-center z-50 overflow-y-auto p-4">
-            <div class="relative mx-auto p-6 border w-full max-w-lg shadow-lg rounded-xl bg-white">
-                <h3 class="text-xl font-bold text-gray-800 mb-6">แก้ไขรายการ</h3>
-                <form id="edit-task-form">
-                    <input type="hidden" id="edit-row-id"><input type="hidden" id="edit-status">
-                    <div class="mb-4"><label for="edit-project-input" class="block text-sm font-medium text-gray-700 mb-1">ชื่อโปรเจกต์</label><input type="text" id="edit-project-input" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
-                    <div class="mb-4"><label for="edit-task-input" class="block text-sm font-medium text-gray-700 mb-1">ชื่องาน</label><input type="text" id="edit-task-input" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
-                    <div class="mb-4"><label class="block text-sm font-medium text-gray-700 mb-2">ลำดับความสำคัญ</label><div id="edit-priority-selector" class="grid grid-cols-2 sm:grid-cols-4 gap-2"> <button type="button" data-priority="สำคัญและเร่งด่วน" class="priority-btn w-full p-2 text-white rounded-lg shadow-md transition-transform duration-200 bg-red-500 hover:bg-red-600" style="--tw-shadow-color: #ef4444;"><span class="font-bold block text-sm">Do</span></button> <button type="button" data-priority="สำคัญแต่ไม่เร่งด่วน" class="priority-btn w-full p-2 text-white rounded-lg shadow-md transition-transform duration-200 bg-blue-500 hover:bg-blue-600" style="--tw-shadow-color: #3b82f6;"><span class="font-bold block text-sm">Decide</span></button> <button type="button" data-priority="ไม่สำคัญแต่เร่งด่วน" class="priority-btn w-full p-2 text-white rounded-lg shadow-md transition-transform duration-200 bg-orange-500 hover:bg-orange-600" style="--tw-shadow-color: #f97316;"><span class="font-bold block text-sm">Delegate</span></button> <button type="button" data-priority="ไม่สำคัญและไม่เร่งด่วน" class="priority-btn w-full p-2 text-white rounded-lg shadow-md transition-transform duration-200 bg-gray-500 hover:bg-gray-600" style="--tw-shadow-color: #6b7280;"><span class="font-bold block text-sm">Delete</span></button></div></div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                        <div><label for="edit-start-date-input" class="block text-sm font-medium text-gray-700 mb-1">วันที่เริ่ม</label><input type="date" id="edit-start-date-input" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
-                        <div><label for="edit-end-date-input" class="block text-sm font-medium text-gray-700 mb-1">วันที่สิ้นสุด</label><input type="date" id="edit-end-date-input" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
-                        <div><label for="edit-start-time-input" class="block text-sm font-medium text-gray-700 mb-1">เวลาเริ่ม</label><input type="time" id="edit-start-time-input" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
-                        <div><label for="edit-end-time-input" class="block text-sm font-medium text-gray-700 mb-1">เวลาสิ้นสุด</label><input type="time" id="edit-end-time-input" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
-                    </div>
-                    <div class="mb-4">
-                        <label for="edit-note-input" class="block text-sm font-medium text-gray-700 mb-1">บันทึก / Note</label>
-                        <textarea id="edit-note-input" rows="4" class="w-full p-3 border border-gray-300 rounded-lg"></textarea>
-                    </div>
-                     <div class="flex items-center mb-4"><input id="edit-is-key-event-checkbox" type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><label for="edit-is-key-event-checkbox" class="ml-2 block text-sm text-gray-900">เป็น Event สำคัญ</label></div>
-                    <div class="flex justify-end space-x-3 mt-6"><button type="button" id="edit-cancel-btn" class="bg-gray-200 text-gray-700 font-bold py-2 px-5 rounded-lg hover:bg-gray-300 transition">ยกเลิก</button><button type="submit" class="bg-blue-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-blue-600 transition">บันทึก</button></div>
-                </form>
-            </div>
-        </div>
-        <!-- Confirmation Modal -->
-        <div id="confirm-modal" class="modal fixed inset-0 bg-gray-600 bg-opacity-50 h-full w-full hidden items-center justify-center z-50">
-          <div class="relative mx-auto p-6 border w-full max-w-sm shadow-lg rounded-xl bg-white">
-            <h3 class="text-lg font-bold text-gray-800 mb-4">ยืนยันการกระทำ</h3>
-            <p id="confirm-modal-text" class="text-gray-600 mb-6">คุณแน่ใจหรือไม่?</p>
-            <div class="flex justify-end space-x-3">
-              <button id="confirm-modal-cancel-btn" class="bg-gray-200 text-gray-700 font-bold py-2 px-5 rounded-lg hover:bg-gray-300 transition">ยกเลิก</button>
-              <button id="confirm-modal-confirm-btn" class="bg-red-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-red-600 transition">ยืนยัน</button>
-            </div>
-          </div>
-        </div>
-        <!-- Conflict Modal -->
-        <div id="conflict-modal" class="modal fixed inset-0 bg-gray-600 bg-opacity-50 h-full w-full hidden items-center justify-center z-50">
-          <div class="relative mx-auto p-6 border w-full max-w-lg shadow-lg rounded-xl bg-white">
-            <h3 class="text-xl font-bold text-gray-800 mb-4">ตรวจพบตารางงานซ้อนทับ</h3>
-            <div id="conflict-modal-text" class="text-gray-600 mb-6 bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg"></div>
-            <p class="text-gray-700 mb-6">คุณต้องการทำอะไร?</p>
-            <div class="flex flex-wrap justify-end gap-3">
-              <button id="conflict-cancel-btn" class="bg-gray-200 text-gray-700 font-bold py-2 px-5 rounded-lg hover:bg-gray-300 transition">ยกเลิก</button>
-              <button id="conflict-overlap-btn" class="bg-yellow-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-yellow-600 transition">อนุญาตให้ซ้อนทับ</button>
-              <button id="conflict-find-next-btn" class="bg-blue-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-blue-600 transition">หาเวลาว่างถัดไป</button>
-            </div>
-          </div>
+                </div>
+            </form>
         </div>
     </div>
-    
-    <!-- Templates for dynamic content -->
-    <div id="templates" class="hidden">
-        <div id="add-task-container-template">
-             <div class="bg-white p-6 rounded-xl shadow-md">
-                <form id="task-form">
-                     <div class="relative mb-4">
-                         <label for="task-input" class="block text-sm font-medium text-gray-700 mb-1">ชื่องาน (เมื่อพิมพ์เสร็จ AI จะแนะนำโปรเจกต์และความสำคัญให้)</label>
-                         <input type="text" id="task-input" placeholder="เช่น 'เตรียมสไลด์เสนอวิทยานิพนธ์'..." class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition" required>
-                         <button type="button" id="ai-breakdown-btn" title="ให้ AI ช่วยแตกงานย่อย" class="absolute top-8 right-2 bg-purple-100 text-purple-700 font-semibold py-1 px-3 rounded-lg hover:bg-purple-200 transition-colors">
-                             ✨ แตกงานย่อย
-                         </button>
-                     </div>
-                     <div class="relative mb-4">
-                         <label for="project-input" class="block text-sm font-medium text-gray-700 mb-1">ชื่อโปรเจกต์</label>
-                         <div class="flex items-center">
-                             <span id="project-color-indicator" class="project-color-dot mr-2 bg-transparent"></span>
-                             <input type="text" id="project-input" placeholder="AI กำลังคิด..." class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition" required>
+
+    <!-- Main App Content (Initially Hidden) -->
+    <div id="main-app" class="hidden">
+        <div id="app" class="container mx-auto p-4 sm:p-6 max-w-5xl">
+            <header class="text-center mb-6 flex flex-col items-center">
+                <div class="flex items-center justify-center">
+                    <img src="https://i.postimg.cc/yY1rPJ07/wirun-facbook.png" alt="Logo" class="w-16 h-16 rounded-full mr-4 shadow-md">
+                    <div>
+                        <h1 class="text-4xl font-bold text-gray-700 text-left">Compass AI</h1>
+                        <p class="text-gray-500 mt-1 text-left">วางแผนงานอย่างชาญฉลาด จัดลำดับความสำคัญด้วย AI</p>
+                    </div>
+                </div>
+            </header>
+
+            <nav id="view-switcher" class="flex justify-center bg-white p-2 rounded-lg shadow-sm mb-6 space-x-1 sm:space-x-2">
+                <button data-view="daily" class="nav-btn active px-3 sm:px-4 py-2 text-sm font-semibold text-gray-700 rounded-md hover:bg-blue-100">รายวัน</button>
+                <button data-view="weekly" class="nav-btn px-3 sm:px-4 py-2 text-sm font-semibold text-gray-700 rounded-md hover:bg-blue-100">รายสัปดาห์</button>
+                <button data-view="monthly" class="nav-btn px-3 sm:px-4 py-2 text-sm font-semibold text-gray-700 rounded-md hover:bg-blue-100">รายเดือน</button>
+                <button data-view="yearly" class="nav-btn px-3 sm:px-4 py-2 text-sm font-semibold text-gray-700 rounded-md hover:bg-blue-100">รายปี</button>
+                <button data-view="goals" class="nav-btn px-3 sm:px-4 py-2 text-sm font-semibold text-gray-700 rounded-md hover:bg-blue-100">เป้าหมาย</button>
+            </nav>
+            
+            <div id="add-task-wrapper" class="mb-8"></div>
+            
+            <div id="loading" class="text-center my-6 hidden"><p class="text-blue-500">กำลังโหลดข้อมูล...</p></div>
+            <div id="error" class="hidden bg-red-100 text-red-700 p-4 rounded-lg my-4"></div>
+            <div id="success" class="hidden bg-green-100 text-green-700 p-4 rounded-lg my-4"></div>
+
+            <div id="view-container">
+                <div id="view-header" class="flex justify-between items-center mb-4"></div>
+                <div id="task-list-container"></div>
+            </div>
+        </div>
+        <!-- Modals Container -->
+        <div id="modal-container">
+            <!-- AI Subtask Suggestions Modal -->
+            <div id="ai-modal" class="modal fixed inset-0 bg-gray-600 bg-opacity-50 h-full w-full hidden items-center justify-center z-50">
+                <div class="relative mx-auto p-6 border w-full max-w-lg shadow-lg rounded-xl bg-white">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">AI แนะนำขั้นตอนย่อย</h3>
+                     <div class="grid grid-cols-2 gap-4 mb-4 p-4 bg-gray-50 rounded-lg">
+                         <div>
+                             <label for="ai-start-date" class="block text-sm font-medium text-gray-700">วันที่เริ่ม</label>
+                             <input type="date" id="ai-start-date" class="mt-1 w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-400 focus:outline-none">
+                         </div>
+                         <div>
+                             <label for="ai-start-time" class="block text-sm font-medium text-gray-700">เวลาเริ่ม</label>
+                             <input type="time" id="ai-start-time" class="mt-1 w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-400 focus:outline-none">
                          </div>
                      </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">ลำดับความสำคัญ (Eisenhower Matrix)</label>
-                        <div id="priority-selector" class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                            <button type="button" data-priority="สำคัญและเร่งด่วน" class="priority-btn w-full p-2 text-white rounded-lg shadow-md transition-transform duration-200 bg-red-500 hover:bg-red-600" style="--tw-shadow-color: #ef4444;">
-                                <span class="font-bold block text-sm">Do</span><span class="text-xs">ทำทันที</span>
-                            </button>
-                            <button type="button" data-priority="สำคัญแต่ไม่เร่งด่วน" class="priority-btn w-full p-2 text-white rounded-lg shadow-md transition-transform duration-200 bg-blue-500 hover:bg-blue-600 selected" style="--tw-shadow-color: #3b82f6;">
-                                <span class="font-bold block text-sm">Decide</span><span class="text-xs">วางแผน</span>
-                            </button>
-                            <button type="button" data-priority="ไม่สำคัญแต่เร่งด่วน" class="priority-btn w-full p-2 text-white rounded-lg shadow-md transition-transform duration-200 bg-orange-500 hover:bg-orange-600" style="--tw-shadow-color: #f97316;">
-                                <span class="font-bold block text-sm">Delegate</span><span class="text-xs">มอบหมาย</span>
-                            </button>
-                             <button type="button" data-priority="ไม่สำคัญและไม่เร่งด่วน" class="priority-btn w-full p-2 text-white rounded-lg shadow-md transition-transform duration-200 bg-gray-500 hover:bg-gray-600" style="--tw-shadow-color: #6b7280;">
-                                <span class="font-bold block text-sm">Delete</span><span class="text-xs">ลด/เลิก</span>
-                            </button>
-                        </div>
+                    <div id="ai-suggestions" class="space-y-3 mb-5 max-h-64 overflow-y-auto p-1"></div>
+                    <div class="flex justify-end space-x-3">
+                        <button id="ai-cancel-btn" class="bg-gray-200 text-gray-700 font-bold py-2 px-5 rounded-lg hover:bg-gray-300 transition">ยกเลิก</button>
+                        <button id="ai-add-selected-btn" class="bg-purple-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-purple-600 transition">เพิ่มรายการที่เลือก</button>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label for="start-date-input" class="block text-sm font-medium text-gray-700 mb-1">วันที่เริ่ม</label>
-                            <input type="date" id="start-date-input" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                </div>
+            </div>
+            <!-- Add/Edit Goal Modal -->
+            <div id="goal-modal" class="modal fixed inset-0 bg-gray-600 bg-opacity-50 h-full w-full hidden items-center justify-center z-50 overflow-y-auto p-4">
+                <div class="relative mx-auto p-6 border w-full max-w-lg shadow-lg rounded-xl bg-white">
+                    <h3 id="goal-modal-title" class="text-xl font-bold text-gray-800 mb-6">เพิ่มเป้าหมายใหม่</h3>
+                    <form id="goal-form">
+                        <input type="hidden" id="goal-row-id">
+                        <div class="mb-4">
+                            <label for="goal-title-input" class="block text-sm font-medium text-gray-700 mb-1">ชื่อเป้าหมาย (ร่างแรก)</label>
+                            <input type="text" id="goal-title-input" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="เช่น 'อยากเก่งภาษาอังกฤษขึ้น'" required>
                         </div>
-                        <div>
-                            <label for="end-date-input" class="block text-sm font-medium text-gray-700 mb-1">วันที่สิ้นสุด</label>
-                            <input type="date" id="end-date-input" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                        <div class="mb-4">
+                            <label for="goal-time-horizon-select" class="block text-sm font-medium text-gray-700 mb-1">ระยะเวลา</label>
+                            <select id="goal-time-horizon-select" class="w-full p-3 border border-gray-300 rounded-lg bg-white status-select">
+                                <option>ระยะสั้น (3-6 เดือน)</option>
+                                <option selected>ระยะกลาง (6-12 เดือน)</option>
+                                <option>ระยะยาว (1-3 ปี)</option>
+                            </select>
                         </div>
-                         <div>
-                            <label for="start-time-input" class="block text-sm font-medium text-gray-700 mb-1">เวลาเริ่ม</label>
-                            <input type="time" id="start-time-input" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                        <div class="mb-4">
+                            <label for="goal-description-input" class="block text-sm font-medium text-gray-700 mb-1">คำอธิบาย/เหตุผล (Why?)</label>
+                            <textarea id="goal-description-input" rows="4" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="เช่น 'เพื่อใช้ในการทำงาน และดูหนังได้เข้าใจมากขึ้น'"></textarea>
                         </div>
-                         <div>
-                            <label for="end-time-input" class="block text-sm font-medium text-gray-700 mb-1">เวลาสิ้นสุด</label>
-                            <input type="time" id="end-time-input" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                        <div class="text-center mb-4">
+                            <button type="button" id="smart-goal-btn" class="bg-purple-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-purple-600 transition">
+                                ✨ ช่วยทำให้เป็น SMART Goal
+                            </button>
                         </div>
-                    </div>
-                    <div class="mb-4">
-                        <label for="note-input" class="block text-sm font-medium text-gray-700 mb-1">บันทึก / Note</label>
-                        <textarea id="note-input" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition" placeholder="รายละเอียดเพิ่มเติม..."></textarea>
-                    </div>
-                     <div class="flex items-center mb-4">
-                        <input id="is-key-event-checkbox" type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
-                        <label for="is-key-event-checkbox" class="ml-2 block text-sm text-gray-900">เป็น Event สำคัญ (สำหรับแสดงในมุมมองรายปี)</label>
-                    </div>
-                    <button type="submit" class="w-full bg-blue-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-600 transition-colors duration-300 shadow">
-                        เพิ่ม
-                    </button>
-                </form>
+                        <div id="ai-goal-suggestion-area" class="hidden my-4 p-4 bg-purple-50 border-l-4 border-purple-400 rounded-r-lg">
+                            <!-- AI content will go here -->
+                        </div>
+                        <div class="flex justify-end space-x-3 mt-6">
+                            <button type="button" id="goal-cancel-btn" class="bg-gray-200 text-gray-700 font-bold py-2 px-5 rounded-lg hover:bg-gray-300 transition">ยกเลิก</button>
+                            <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-blue-600 transition">บันทึก</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Edit Task Modal -->
+            <div id="edit-modal" class="modal fixed inset-0 bg-gray-600 bg-opacity-50 h-full w-full hidden items-center justify-center z-50 overflow-y-auto p-4">
+                <div class="relative mx-auto p-6 border w-full max-w-lg shadow-lg rounded-xl bg-white">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6">แก้ไขรายการ</h3>
+                    <form id="edit-task-form">
+                        <input type="hidden" id="edit-row-id"><input type="hidden" id="edit-status">
+                        <div class="mb-4"><label for="edit-project-input" class="block text-sm font-medium text-gray-700 mb-1">ชื่อโปรเจกต์</label><input type="text" id="edit-project-input" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                        <div class="mb-4"><label for="edit-task-input" class="block text-sm font-medium text-gray-700 mb-1">ชื่องาน</label><input type="text" id="edit-task-input" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                        <div class="mb-4"><label class="block text-sm font-medium text-gray-700 mb-2">ลำดับความสำคัญ</label><div id="edit-priority-selector" class="grid grid-cols-2 sm:grid-cols-4 gap-2"> <button type="button" data-priority="สำคัญและเร่งด่วน" class="priority-btn w-full p-2 text-white rounded-lg shadow-md transition-transform duration-200 bg-red-500 hover:bg-red-600" style="--tw-shadow-color: #ef4444;"><span class="font-bold block text-sm">Do</span></button> <button type="button" data-priority="สำคัญแต่ไม่เร่งด่วน" class="priority-btn w-full p-2 text-white rounded-lg shadow-md transition-transform duration-200 bg-blue-500 hover:bg-blue-600" style="--tw-shadow-color: #3b82f6;"><span class="font-bold block text-sm">Decide</span></button> <button type="button" data-priority="ไม่สำคัญแต่เร่งด่วน" class="priority-btn w-full p-2 text-white rounded-lg shadow-md transition-transform duration-200 bg-orange-500 hover:bg-orange-600" style="--tw-shadow-color: #f97316;"><span class="font-bold block text-sm">Delegate</span></button> <button type="button" data-priority="ไม่สำคัญและไม่เร่งด่วน" class="priority-btn w-full p-2 text-white rounded-lg shadow-md transition-transform duration-200 bg-gray-500 hover:bg-gray-600" style="--tw-shadow-color: #6b7280;"><span class="font-bold block text-sm">Delete</span></button></div></div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                            <div><label for="edit-start-date-input" class="block text-sm font-medium text-gray-700 mb-1">วันที่เริ่ม</label><input type="date" id="edit-start-date-input" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                            <div><label for="edit-end-date-input" class="block text-sm font-medium text-gray-700 mb-1">วันที่สิ้นสุด</label><input type="date" id="edit-end-date-input" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                            <div><label for="edit-start-time-input" class="block text-sm font-medium text-gray-700 mb-1">เวลาเริ่ม</label><input type="time" id="edit-start-time-input" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                            <div><label for="edit-end-time-input" class="block text-sm font-medium text-gray-700 mb-1">เวลาสิ้นสุด</label><input type="time" id="edit-end-time-input" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="edit-note-input" class="block text-sm font-medium text-gray-700 mb-1">บันทึก / Note</label>
+                            <textarea id="edit-note-input" rows="4" class="w-full p-3 border border-gray-300 rounded-lg"></textarea>
+                        </div>
+                         <div class="flex items-center mb-4"><input id="edit-is-key-event-checkbox" type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"><label for="edit-is-key-event-checkbox" class="ml-2 block text-sm text-gray-900">เป็น Event สำคัญ</label></div>
+                        <div class="flex justify-end space-x-3 mt-6"><button type="button" id="edit-cancel-btn" class="bg-gray-200 text-gray-700 font-bold py-2 px-5 rounded-lg hover:bg-gray-300 transition">ยกเลิก</button><button type="submit" class="bg-blue-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-blue-600 transition">บันทึก</button></div>
+                    </form>
+                </div>
+            </div>
+            <!-- Confirmation Modal -->
+            <div id="confirm-modal" class="modal fixed inset-0 bg-gray-600 bg-opacity-50 h-full w-full hidden items-center justify-center z-50">
+              <div class="relative mx-auto p-6 border w-full max-w-sm shadow-lg rounded-xl bg-white">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">ยืนยันการกระทำ</h3>
+                <p id="confirm-modal-text" class="text-gray-600 mb-6">คุณแน่ใจหรือไม่?</p>
+                <div class="flex justify-end space-x-3">
+                  <button id="confirm-modal-cancel-btn" class="bg-gray-200 text-gray-700 font-bold py-2 px-5 rounded-lg hover:bg-gray-300 transition">ยกเลิก</button>
+                  <button id="confirm-modal-confirm-btn" class="bg-red-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-red-600 transition">ยืนยัน</button>
+                </div>
+              </div>
+            </div>
+            <!-- Conflict Modal -->
+            <div id="conflict-modal" class="modal fixed inset-0 bg-gray-600 bg-opacity-50 h-full w-full hidden items-center justify-center z-50">
+              <div class="relative mx-auto p-6 border w-full max-w-lg shadow-lg rounded-xl bg-white">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">ตรวจพบตารางงานซ้อนทับ</h3>
+                <div id="conflict-modal-text" class="text-gray-600 mb-6 bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg"></div>
+                <p class="text-gray-700 mb-6">คุณต้องการทำอะไร?</p>
+                <div class="flex flex-wrap justify-end gap-3">
+                  <button id="conflict-cancel-btn" class="bg-gray-200 text-gray-700 font-bold py-2 px-5 rounded-lg hover:bg-gray-300 transition">ยกเลิก</button>
+                  <button id="conflict-overlap-btn" class="bg-yellow-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-yellow-600 transition">อนุญาตให้ซ้อนทับ</button>
+                  <button id="conflict-find-next-btn" class="bg-blue-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-blue-600 transition">หาเวลาว่างถัดไป</button>
+                </div>
+              </div>
             </div>
         </div>
-    </div>
-    
-    <footer class="text-center mt-12 mb-6 text-sm text-gray-400">
-        <p>สร้างสรรค์และพัฒนาโดย เภสัชกรวิรุณ เวชศิริ</p>
-    </footer>
-
-    <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxb-yd8WVT1MF3FM9EDbltHgirLvo4PDPdjAzhnVVphTUMsd93rnUxVw3gZDij1YSjn/exec";
         
-        // --- State Variables ---
-        let allTasks = [], allGoals = [], projectColorMap = {}, nextColorIndex = 0, currentView = 'daily', currentDateForView = new Date(), selectedPriority = 'สำคัญแต่ไม่เร่งด่วน';
-        let taskToDeleteId = null, goalToDeleteId = null;
-        let conflictingTaskData = null; 
-        let dailyViewCurrentPage = 1;
-        
-        // --- Constants ---
-        const projectColors = ['bg-red-400', 'bg-orange-400', 'bg-amber-400', 'bg-yellow-400', 'bg-lime-400', 'bg-green-400', 'bg-emerald-400', 'bg-teal-400', 'bg-cyan-400', 'bg-sky-400', 'bg-blue-400', 'bg-indigo-400', 'bg-violet-400', 'bg-purple-400', 'bg-fuchsia-400', 'bg-pink-400', 'bg-rose-400'];
-        const statuses = ['ต้องทำ', 'กำลังทำ', 'รอตรวจ', 'เสร็จแล้ว'];
-        const weekdays = ['จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.', 'อา.'];
-        const weekdaysFull = ['จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์', 'อาทิตย์'];
-        const months = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
-        const DAILY_ITEMS_PER_PAGE = 10;
-        
-        // --- DOM Element References ---
-        let loadingDiv, errorDiv, successDiv, viewSwitcher, viewHeader, taskListContainer, addTaskWrapper, templates;
-        let aiModal, editModal, confirmModal, conflictModal, goalModal; 
-        
-        // --- Utility Functions ---
-        const showMessage = (element, message, duration = 3000) => { element.textContent = message; element.classList.remove('hidden'); setTimeout(() => element.classList.add('hidden'), duration); };
-        const formatDate = (date) => date.toISOString().split('T')[0];
-        const formatTime = (date) => date.toTimeString().slice(0, 5);
-        const getProjectColorClass = (projectName) => { if (!projectName) return 'bg-gray-400'; if (!projectColorMap[projectName]) { projectColorMap[projectName] = projectColors[nextColorIndex % projectColors.length]; nextColorIndex++; } return projectColorMap[projectName]; };
-        const getPriorityInfo = (priority) => { switch (priority) { case 'สำคัญและเร่งด่วน': return { text: 'ทำทันที', classes: 'bg-red-100 text-red-800', icon: '🔥' }; case 'สำคัญแต่ไม่เร่งด่วน': return { text: 'วางแผน', classes: 'bg-blue-100 text-blue-800', icon: '📅' }; case 'ไม่สำคัญแต่เร่งด่วน': return { text: 'มอบหมาย', classes: 'bg-orange-100 text-orange-800', icon: '👥' }; case 'ไม่สำคัญและไม่เร่งด่วน': return { text: 'ลด/เลิก', classes: 'bg-gray-100 text-gray-800', icon: '🗑️' }; default: return { text: 'วางแผน', classes: 'bg-blue-100 text-blue-800', icon: '📅' }; } };
-        const getStatusInfo = (status) => { switch (status) { case 'กำลังทำ': return { text: 'กำลังทำ', classes: 'bg-yellow-100 text-yellow-800' }; case 'รอตรวจ': return { text: 'รอตรวจ', classes: 'bg-purple-100 text-purple-800' }; case 'เสร็จแล้ว': return { text: 'เสร็จแล้ว', classes: 'bg-green-100 text-green-800' }; default: return { text: 'ต้องทำ', classes: 'bg-blue-100 text-blue-800' }; } };
-        const isWorkingHour = (date) => { const hour = date.getHours(); return (hour >= 5 && hour < 6) || (hour >= 8 && hour < 12) || (hour >= 13 && hour < 22); };
-        const calculateAndFormatDuration = (startDate, startTime, endDate, endTime) => { if (!startDate || !startTime || !endDate || !endTime) return ''; let startDateTime = new Date(`${startDate}T${startTime}`); const endDateTime = new Date(`${endDate}T${endTime}`); if (startDateTime >= endDateTime) return ''; let workingMinutes = 0; while (startDateTime < endDateTime) { if (isWorkingHour(startDateTime)) workingMinutes++; startDateTime.setMinutes(startDateTime.getMinutes() + 1); } if (workingMinutes <= 0) return ''; const hours = Math.floor(workingMinutes / 60); const minutes = Math.round(workingMinutes % 60); let durationString = ''; if (hours > 0) durationString += `${hours} ชม. `; if (minutes > 0) durationString += `${minutes} นาที`; return durationString.trim(); };
-        const calculateEndTimeWithBreaks = (startTime, durationMinutes) => { let currentTime = new Date(startTime); let remainingDuration = durationMinutes; while (remainingDuration > 0) { if(isWorkingHour(currentTime)) { remainingDuration--; } currentTime.setMinutes(currentTime.getMinutes() + 1); } currentTime.setMinutes(currentTime.getMinutes() - 1); return currentTime; };
-        const isOverlapping = (startA, endA, startB, endB) => { return new Date(startA) < new Date(endB) && new Date(endA) > new Date(startB); };
-        
-        // --- Modal Control Functions ---
-        const showModal = (modal) => { modal.classList.remove('hidden'); modal.classList.add('flex'); };
-        const hideModal = (modal) => { modal.classList.add('hidden'); modal.classList.remove('flex'); };
-
-        const getAggregatedItemsForDate = (date) => {
-            const items = new Set();
-            const dayStart = new Date(date);
-            dayStart.setHours(0, 0, 0, 0);
-            const dayEnd = new Date(date);
-            dayEnd.setHours(23, 59, 59, 999);
-
-            const tasksForDay = allTasks.filter(t => {
-                const taskStart = new Date(t.startDate);
-                const taskEnd = new Date(t.endDate);
-                return taskStart <= dayEnd && taskEnd >= dayStart;
-            });
-
-            tasksForDay.forEach(task => {
-                if (task.project) {
-                    items.add(task.project);
-                } else {
-                    items.add(task.task);
-                }
-            });
-            return Array.from(items);
-        };
-
-        // --- Core Task Functions ---
-        window.openEditModal = (task) => {
-            document.getElementById('edit-row-id').value = task.rowId;
-            document.getElementById('edit-project-input').value = task.project;
-            document.getElementById('edit-task-input').value = task.task;
-            document.getElementById('edit-start-date-input').value = task.startDate;
-            document.getElementById('edit-end-date-input').value = task.endDate;
-            document.getElementById('edit-start-time-input').value = task.startTime;
-            document.getElementById('edit-end-time-input').value = task.endTime;
-            document.getElementById('edit-status').value = task.status;
-            document.getElementById('edit-is-key-event-checkbox').checked = task.isKeyEvent;
-            document.getElementById('edit-note-input').value = task.note || '';
-            updatePrioritySelectionUI(document.getElementById('edit-priority-selector'), task.priority);
-            showModal(editModal);
-        };
-
-        window.deleteTask = (rowId) => {
-            taskToDeleteId = rowId;
-            goalToDeleteId = null;
-            document.getElementById('confirm-modal-text').textContent = 'คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้?';
-            showModal(confirmModal);
-        };
-
-        window.updateTaskStatus = async (rowId, newStatus) => {
-            const taskIndex = allTasks.findIndex(t => t.rowId === rowId);
-            if (taskIndex === -1) return;
-
-            const originalTask = { ...allTasks[taskIndex] };
-            allTasks[taskIndex].status = newStatus;
-            renderCurrentView(); 
-            
-            const dataToUpdate = { ...allTasks[taskIndex] };
-            delete dataToUpdate.isOptimistic;
-            delete dataToUpdate.rowId;
-
-            try {
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ 
-                        action: 'update', 
-                        rowId: rowId, 
-                        ...dataToUpdate 
-                    })
-                });
-                const result = await response.json();
-                if (result.status !== 'success') {
-                    throw new Error(result.message || 'Unknown error from server');
-                }
-            } catch (error) {
-                showMessage(errorDiv, `เกิดข้อผิดพลาดในการอัปเดต: ${error.message}`);
-                allTasks[taskIndex] = originalTask; // Rollback on failure
-                renderCurrentView();
-            }
-        };
-
-        // --- Rendering Functions ---
-        const renderTaskItem = (task) => {
-            const projectColorClass = getProjectColorClass(task.project);
-            const priorityInfo = getPriorityInfo(task.priority);
-            const statusInfo = getStatusInfo(task.status);
-            const duration = calculateAndFormatDuration(task.startDate, task.startTime, task.endDate, task.endTime);
-            const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-            const startDatePart = new Date(task.startDate).toLocaleDateString('th-TH', dateOptions);
-            const endDatePart = new Date(task.endDate).toLocaleDateString('th-TH', dateOptions);
-            let dateDisplay = startDatePart === endDatePart ? startDatePart : `${startDatePart} - ${endDatePart}`;
-            return `
-                <div class="task-item ${task.isOptimistic ? 'optimistic' : ''} flex flex-col sm:flex-row items-start bg-white p-4 rounded-xl shadow-sm transition hover:shadow-md border-l-4 ${projectColorClass.replace('bg-', 'border-')}">
-                    <div class="flex-grow w-full">
-                        <div class="flex items-center justify-between w-full mb-2 gap-2 flex-wrap">
-                            <div class="flex items-center">
-                                <span class="project-color-dot ${projectColorClass}"></span>
-                                <span class="font-bold text-sm text-gray-600">${task.project || 'ไม่มีโปรเจกต์'}</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <div class="flex items-center text-xs font-bold px-2 py-1 rounded-full ${priorityInfo.classes}">
-                                    <span class="mr-1">${priorityInfo.icon}</span> ${priorityInfo.text}
-                                </div>
-                                <select class="status-select text-xs font-bold py-1 pl-2 border-0 rounded-full focus:ring-2 focus:ring-offset-1 transition ${statusInfo.classes}" onchange="updateTaskStatus(${task.rowId}, this.value)">
-                                    ${statuses.map(s => `<option value="${s}" ${task.status === s ? 'selected' : ''}>${s}</option>`).join('')}
-                                </select>
+        <!-- Templates for dynamic content -->
+        <div id="templates" class="hidden">
+            <div id="add-task-container-template">
+                 <div class="bg-white p-6 rounded-xl shadow-md">
+                    <form id="task-form">
+                         <div class="relative mb-4">
+                             <label for="task-input" class="block text-sm font-medium text-gray-700 mb-1">ชื่องาน (เมื่อพิมพ์เสร็จ AI จะแนะนำโปรเจกต์และความสำคัญให้)</label>
+                             <input type="text" id="task-input" placeholder="เช่น 'เตรียมสไลด์เสนอวิทยานิพนธ์'..." class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition" required>
+                             <button type="button" id="ai-breakdown-btn" title="ให้ AI ช่วยแตกงานย่อย" class="absolute top-8 right-2 bg-purple-100 text-purple-700 font-semibold py-1 px-3 rounded-lg hover:bg-purple-200 transition-colors">
+                                 ✨ แตกงานย่อย
+                             </button>
+                         </div>
+                         <div class="relative mb-4">
+                             <label for="project-input" class="block text-sm font-medium text-gray-700 mb-1">ชื่อโปรเจกต์</label>
+                             <div class="flex items-center">
+                                 <span id="project-color-indicator" class="project-color-dot mr-2 bg-transparent"></span>
+                                 <input type="text" id="project-input" placeholder="AI กำลังคิด..." class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition" required>
+                             </div>
+                         </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">ลำดับความสำคัญ (Eisenhower Matrix)</label>
+                            <div id="priority-selector" class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                <button type="button" data-priority="สำคัญและเร่งด่วน" class="priority-btn w-full p-2 text-white rounded-lg shadow-md transition-transform duration-200 bg-red-500 hover:bg-red-600" style="--tw-shadow-color: #ef4444;">
+                                    <span class="font-bold block text-sm">Do</span><span class="text-xs">ทำทันที</span>
+                                </button>
+                                <button type="button" data-priority="สำคัญแต่ไม่เร่งด่วน" class="priority-btn w-full p-2 text-white rounded-lg shadow-md transition-transform duration-200 bg-blue-500 hover:bg-blue-600 selected" style="--tw-shadow-color: #3b82f6;">
+                                    <span class="font-bold block text-sm">Decide</span><span class="text-xs">วางแผน</span>
+                                </button>
+                                <button type="button" data-priority="ไม่สำคัญแต่เร่งด่วน" class="priority-btn w-full p-2 text-white rounded-lg shadow-md transition-transform duration-200 bg-orange-500 hover:bg-orange-600" style="--tw-shadow-color: #f97316;">
+                                    <span class="font-bold block text-sm">Delegate</span><span class="text-xs">มอบหมาย</span>
+                                </button>
+                                 <button type="button" data-priority="ไม่สำคัญและไม่เร่งด่วน" class="priority-btn w-full p-2 text-white rounded-lg shadow-md transition-transform duration-200 bg-gray-500 hover:bg-gray-600" style="--tw-shadow-color: #6b7280;">
+                                    <span class="font-bold block text-sm">Delete</span><span class="text-xs">ลด/เลิก</span>
+                                </button>
                             </div>
                         </div>
-                        <p class="font-semibold text-gray-900 ml-5 ${task.status === 'เสร็จแล้ว' ? 'task-completed' : ''}">${task.task}</p>
-                        ${task.note ? `<div class="mt-2 ml-5 p-2 bg-gray-50 rounded-lg text-sm text-gray-600 whitespace-pre-wrap border-l-2">${task.note}</div>` : ''}
-                        <p class="text-sm text-gray-500 ml-5 mt-2 flex items-center flex-wrap gap-x-2">
-                            <span>${dateDisplay} | เวลา: ${task.startTime || 'N/A'} - ${task.endTime || 'N/A'} น.</span>
-                            ${duration ? `<span class="text-xs font-medium bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">⏱️ ${duration}</span>` : ''}
-                        </p>
-                    </div>
-                    <div class="actions flex flex-wrap gap-2 mt-3 sm:mt-0 sm:ml-4">
-                        <button class="font-semibold py-1 px-3 rounded-md transition-colors duration-200 text-sm bg-gray-100 text-gray-700 hover:bg-gray-200" onclick='openEditModal(${JSON.stringify(task)})'>แก้ไข</button>
-                        <button class="font-semibold py-1 px-3 rounded-md transition-colors duration-200 text-sm bg-red-100 text-red-700 hover:bg-red-200" onclick="deleteTask(${task.rowId})">ลบ</button>
-                    </div>
-                </div>`;
-        };
-        
-        const renderDailyView = () => {
-            const todayStr = formatDate(new Date());
-
-            const sortedTasks = [...allTasks].sort((a, b) => {
-                const aIsToday = a.startDate === todayStr;
-                const bIsToday = b.startDate === todayStr;
-
-                if (aIsToday && !bIsToday) return -1;
-                if (!aIsToday && bIsToday) return 1;
-
-                const aDateTime = new Date(`${a.startDate}T${a.startTime || '00:00'}`);
-                const bDateTime = new Date(`${b.startDate}T${b.startTime || '00:00'}`);
-                return aDateTime - bDateTime;
-            });
-
-            const totalPages = Math.ceil(sortedTasks.length / DAILY_ITEMS_PER_PAGE);
-            
-            viewHeader.innerHTML = `<h2 class="text-2xl font-bold text-gray-700">รายการงานทั้งหมด ${totalPages > 1 ? `(หน้า ${dailyViewCurrentPage} / ${totalPages})` : ''}</h2>`;
-            
-            if (sortedTasks.length === 0) {
-                taskListContainer.innerHTML = '<p class="text-center text-gray-500 py-8">ยังไม่มีรายการที่ต้องทำ</p>';
-            } else {
-                const startIndex = (dailyViewCurrentPage - 1) * DAILY_ITEMS_PER_PAGE;
-                const paginatedTasks = sortedTasks.slice(startIndex, startIndex + DAILY_ITEMS_PER_PAGE);
-                let html = `<div class="space-y-4">${paginatedTasks.map(renderTaskItem).join('')}</div>`;
-
-                if (totalPages > 1) {
-                    html += `
-                        <div class="flex justify-between items-center mt-6">
-                            <button id="prev-page-btn" class="bg-white px-4 py-2 rounded-lg shadow-sm font-semibold text-gray-700 hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed" ${dailyViewCurrentPage === 1 ? 'disabled' : ''}>
-                                &lt; ก่อนหน้า
-                            </button>
-                            <span class="text-sm text-gray-600">หน้า ${dailyViewCurrentPage} จาก ${totalPages}</span>
-                            <button id="next-page-btn" class="bg-white px-4 py-2 rounded-lg shadow-sm font-semibold text-gray-700 hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed" ${dailyViewCurrentPage === totalPages ? 'disabled' : ''}>
-                                ต่อไป &gt;
-                            </button>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label for="start-date-input" class="block text-sm font-medium text-gray-700 mb-1">วันที่เริ่ม</label>
+                                <input type="date" id="start-date-input" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                            </div>
+                            <div>
+                                <label for="end-date-input" class="block text-sm font-medium text-gray-700 mb-1">วันที่สิ้นสุด</label>
+                                <input type="date" id="end-date-input" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                            </div>
+                             <div>
+                                <label for="start-time-input" class="block text-sm font-medium text-gray-700 mb-1">เวลาเริ่ม</label>
+                                <input type="time" id="start-time-input" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                            </div>
+                             <div>
+                                <label for="end-time-input" class="block text-sm font-medium text-gray-700 mb-1">เวลาสิ้นสุด</label>
+                                <input type="time" id="end-time-input" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                            </div>
                         </div>
-                    `;
-                }
-                taskListContainer.innerHTML = html;
-
-                if (totalPages > 1) {
-                    document.getElementById('prev-page-btn').addEventListener('click', () => {
-                        if (dailyViewCurrentPage > 1) {
-                            dailyViewCurrentPage--;
-                            renderDailyView();
-                        }
-                    });
-                    document.getElementById('next-page-btn').addEventListener('click', () => {
-                        if (dailyViewCurrentPage < totalPages) {
-                            dailyViewCurrentPage++;
-                            renderDailyView();
-                        }
-                    });
-                }
-            }
-
-            const tasksForToday = allTasks.filter(t => t.startDate === todayStr);
-            taskListContainer.innerHTML += getAIAnalysisHTML();
-            document.getElementById('get-analysis-btn').addEventListener('click', () => getAIAnalysis('daily', tasksForToday, allGoals));
-        };
-
-        const renderWeeklyView = () => { 
-            const startOfWeek = new Date(currentDateForView); 
-            startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + (startOfWeek.getDay() === 0 ? -6 : 1)); 
-            startOfWeek.setHours(0,0,0,0); 
-            const endOfWeek = new Date(startOfWeek); 
-            endOfWeek.setDate(endOfWeek.getDate() + 6); 
-            endOfWeek.setHours(23,59,59,999); 
-            viewHeader.innerHTML = `<button id="prev-week" class="p-2 rounded-full hover:bg-gray-200 transition">&lt;</button><h2 class="text-2xl font-bold text-gray-700">${startOfWeek.toLocaleDateString('th-TH', {day:'numeric', month:'short'})} - ${endOfWeek.toLocaleDateString('th-TH', {day:'numeric', month:'short', year:'numeric'})}</h2><button id="next-week" class="p-2 rounded-full hover:bg-gray-200 transition">&gt;</button>`; 
-            let weeklyHtml = '<div class="space-y-6">'; 
-            for(let i=0; i<7; i++) { 
-                const day = new Date(startOfWeek); 
-                day.setDate(day.getDate() + i); 
-                const itemsForDay = getAggregatedItemsForDate(day);
-                weeklyHtml += `<div><h3 class="font-bold text-lg mb-2 text-gray-600">${weekdaysFull[i]} <span class="text-gray-400 font-normal">${day.getDate()}</span></h3><div class="space-y-2 pl-4 border-l-2">`;
-                if (itemsForDay.length > 0) {
-                    weeklyHtml += itemsForDay.map(item => `
-                        <div class="flex items-center text-sm p-2 bg-white rounded-md shadow-sm">
-                           <span class="project-color-dot ${getProjectColorClass(item)}"></span>
-                           <span class="text-gray-700">${item}</span>
+                        <div class="mb-4">
+                            <label for="note-input" class="block text-sm font-medium text-gray-700 mb-1">บันทึก / Note</label>
+                            <textarea id="note-input" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition" placeholder="รายละเอียดเพิ่มเติม..."></textarea>
                         </div>
-                    `).join('');
-                } else {
-                    weeklyHtml += '<p class="text-gray-400 text-sm ml-2">ไม่มีงานสำหรับวันนี้</p>';
-                }
-                weeklyHtml += `</div></div>`;
-            } 
-            weeklyHtml += '</div>'; 
-            taskListContainer.innerHTML = weeklyHtml; 
-            document.getElementById('prev-week').onclick = () => { currentDateForView.setDate(currentDateForView.getDate() - 7); renderCurrentView(); }; 
-            document.getElementById('next-week').onclick = () => { currentDateForView.setDate(currentDateForView.getDate() + 7); renderCurrentView(); }; 
-            
-            const tasksForWeek = allTasks.filter(t => {
-                const taskStart = new Date(t.startDate);
-                return taskStart >= startOfWeek && taskStart <= endOfWeek;
-            });
-            taskListContainer.innerHTML += getAIAnalysisHTML();
-            document.getElementById('get-analysis-btn').addEventListener('click', () => getAIAnalysis('weekly', tasksForWeek, allGoals));
-        };
-        
-        const renderMonthlyView = () => { 
-            const year = currentDateForView.getFullYear(); 
-            const month = currentDateForView.getMonth(); 
-            viewHeader.innerHTML = `<button id="prev-month" class="p-2 rounded-full hover:bg-gray-200 transition">&lt;</button><h2 class="text-2xl font-bold text-gray-700">${months[month]} ${year + 543}</h2><button id="next-month" class="p-2 rounded-full hover:bg-gray-200 transition">&gt;</button>`; 
-            const firstDayOfMonth = new Date(year, month, 1).getDay(); 
-            const daysInMonth = new Date(year, month + 1, 0).getDate(); 
-            const firstDay = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1; 
-            let calendarHtml = '<div class="bg-white rounded-lg shadow-sm overflow-hidden"><div class="calendar-grid border-t border-l border-gray-200">'; 
-            weekdays.forEach(day => calendarHtml += `<div class="text-center font-bold p-2 bg-gray-50 border-r border-b border-gray-200 text-sm">${day}</div>`); 
-            let dayCounter = 1; 
-            for (let i = 0; i < 42; i++) { 
-                if (i < firstDay || dayCounter > daysInMonth) { 
-                    calendarHtml += `<div class="calendar-day other-month border-r border-b border-gray-200"></div>`; 
-                } else { 
-                    const currentDate = new Date(year, month, dayCounter); 
-                    const itemsForDay = getAggregatedItemsForDate(currentDate);
-                    calendarHtml += `<div class="calendar-day p-2 border-r border-b border-gray-200 relative"><span class="font-semibold text-sm">${dayCounter}</span><div class="flex flex-col gap-1 mt-2 overflow-hidden">`;
-                    calendarHtml += itemsForDay.slice(0, 3).map(item => { 
-                        const colorClass = getProjectColorClass(item);
-                        return `<div title="${item}" class="text-xs truncate rounded-sm px-1 ${colorClass.replace('bg-','text-').replace('-400', '-800')} ${colorClass.replace('400', '100')}">${item}</div>`;
-                    }).join('');
-                    if (itemsForDay.length > 3) {
-                        calendarHtml += `<div class="text-xs text-gray-500 mt-1">+ ${itemsForDay.length - 3} เพิ่มเติม</div>`;
-                    }
-                    calendarHtml += `</div></div>`; 
-                    dayCounter++; 
-                } 
-            } 
-            calendarHtml += '</div></div>'; 
-            taskListContainer.innerHTML = calendarHtml; 
-            document.getElementById('prev-month').onclick = () => { currentDateForView.setMonth(currentDateForView.getMonth() - 1); renderCurrentView(); }; 
-            document.getElementById('next-month').onclick = () => { currentDateForView.setMonth(currentDateForView.getMonth() + 1); renderCurrentView(); }; 
-
-            const tasksForMonth = allTasks.filter(t => {
-                const taskDate = new Date(t.startDate);
-                return taskDate.getFullYear() === year && taskDate.getMonth() === month;
-            });
-            taskListContainer.innerHTML += getAIAnalysisHTML();
-            document.getElementById('get-analysis-btn').addEventListener('click', () => getAIAnalysis('monthly', tasksForMonth, allGoals));
-        };
-        
-        const renderYearlyView = () => { 
-            const year = currentDateForView.getFullYear(); 
-            viewHeader.innerHTML = `<button id="prev-year" class="p-2 rounded-full hover:bg-gray-200 transition">&lt;</button><h2 class="text-2xl font-bold text-gray-700">ภาพรวมปี ${year + 543}</h2><button id="next-year" class="p-2 rounded-full hover:bg-gray-200 transition">&gt;</button>`; 
-            
-            let yearlyHtml = '<div class="bg-white rounded-lg shadow-sm p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">'; 
-            
-            let hasContent = false;
-            for (let i = 0; i < 12; i++) { 
-                const tasksInMonth = allTasks.filter(t => new Date(t.startDate).getFullYear() === year && new Date(t.startDate).getMonth() === i);
-                const monthItemsSet = new Set();
-                tasksInMonth.forEach(task => {
-                    if (task.project) monthItemsSet.add(task.project);
-                    else monthItemsSet.add(task.task);
-                });
-
-                const uniqueItemsInMonth = Array.from(monthItemsSet);
-                
-                yearlyHtml += `<div><h3 class="font-bold text-lg text-gray-700 mb-2">${months[i]}</h3><div class="space-y-1">`;
-                if (uniqueItemsInMonth.length > 0) {
-                    hasContent = true;
-                    uniqueItemsInMonth.forEach(item => {
-                        yearlyHtml += `<div class="flex items-center text-sm">
-                            <span class="project-color-dot ${getProjectColorClass(item)}"></span>
-                            <span class="text-gray-600">${item}</span>
-                        </div>`;
-                    });
-                } else {
-                    yearlyHtml += `<p class="text-sm text-gray-400 italic">ไม่มีโปรเจกต์หรืองาน</p>`;
-                }
-                 yearlyHtml += `</div></div>`;
-            } 
-            
-            yearlyHtml += '</div>'; 
-            
-            if (!hasContent) {
-                 yearlyHtml = '<div class="bg-white rounded-lg shadow-sm p-6"><p class="text-center text-gray-500 py-8">ไม่พบข้อมูลสำหรับปีนี้</p></div>';
-            }
-
-            taskListContainer.innerHTML = yearlyHtml; 
-            document.getElementById('prev-year').onclick = () => { currentDateForView.setFullYear(currentDateForView.getFullYear() - 1); renderCurrentView(); }; 
-            document.getElementById('next-year').onclick = () => { currentDateForView.setFullYear(currentDateForView.getFullYear() + 1); renderCurrentView(); }; 
-            
-            const tasksForYear = allTasks.filter(t => new Date(t.startDate).getFullYear() === year);
-            taskListContainer.innerHTML += getAIAnalysisHTML();
-            document.getElementById('get-analysis-btn').addEventListener('click', () => getAIAnalysis('yearly', tasksForYear, allGoals));
-        };
-
-        const getAIAnalysisHTML = () => {
-            return `
-            <div id="ai-analysis-container" class="mt-8 pt-6 border-t-2 border-dashed">
-                <h3 class="text-xl font-bold text-gray-700 mb-4 text-center">AI วิเคราะห์และให้คำแนะนำ</h3>
-                <div id="ai-analysis-content" class="bg-white p-6 rounded-xl shadow-sm min-h-[100px] text-center flex items-center justify-center border">
-                    <button id="get-analysis-btn" class="bg-purple-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-purple-600 transition shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                        ✨ วิเคราะห์ภาพรวม
-                    </button>
-                </div>
-                <div id="ai-analysis-actions" class="text-center mt-4 hidden">
-                    <button id="save-analysis-btn" class="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600 transition">
-                        บันทึกคำแนะนำ
-                    </button>
+                         <div class="flex items-center mb-4">
+                            <input id="is-key-event-checkbox" type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <label for="is-key-event-checkbox" class="ml-2 block text-sm text-gray-900">เป็น Event สำคัญ (สำหรับแสดงในมุมมองรายปี)</label>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-600 transition-colors duration-300 shadow">
+                            เพิ่ม
+                        </button>
+                    </form>
                 </div>
             </div>
-            `;
-        };
+        </div>
         
-        const renderCurrentView = () => {
-            if (currentView === 'goals') {
-                addTaskWrapper.style.display = 'none';
-                renderGoalsView();
-            } else {
-                addTaskWrapper.style.display = 'block';
-                switch (currentView) {
-                    case 'daily': renderDailyView(); break;
-                    case 'weekly': renderWeeklyView(); break;
-                    case 'monthly': renderMonthlyView(); break;
-                    case 'yearly': renderYearlyView(); break;
-                }
+        <footer class="text-center mt-12 mb-6 text-sm text-gray-400">
+            <p>สร้างสรรค์และพัฒนาโดย เภสัชกรวิรุณ เวชศิริ</p>
+        </footer>
+    </div>
+
+    <script>
+        // --- NEW: LOGIN SCRIPT ---
+        // --------------------------------------------------------------------
+        // --- !!! สำคัญ: เปลี่ยนรหัสผ่านตรงนี้ !!! ---
+        const CORRECT_PASSWORD = 'Compass2025!'; 
+        // --------------------------------------------------------------------
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginScreen = document.getElementById('login-screen');
+            const mainApp = document.getElementById('main-app');
+            const loginForm = document.getElementById('login-form');
+            const passwordInput = document.getElementById('password-input');
+            const loginError = document.getElementById('login-error');
+
+            // Check if user is already logged in (for session refresh)
+            if (sessionStorage.getItem('isLoggedIn') === 'true') {
+                loginScreen.classList.add('hidden');
+                mainApp.classList.remove('hidden');
+                initializeApp();
             }
-        };
 
-        const fetchAllData = async () => {
-            loadingDiv.classList.remove('hidden');
-            try {
-                // Fetch both tasks and goals
-                const [tasksResponse, goalsResponse] = await Promise.all([
-                    fetch(`${SCRIPT_URL}?action=read`),
-                    fetch(`${SCRIPT_URL}?action=readGoals`)
-                ]);
-
-                if (!tasksResponse.ok) throw new Error(`Tasks Network Error: ${tasksResponse.statusText}`);
-                if (!goalsResponse.ok) throw new Error(`Goals Network Error: ${goalsResponse.statusText}`);
-
-                const tasksResult = await tasksResponse.json();
-                const goalsResult = await goalsResponse.json();
-
-                if (!Array.isArray(tasksResult)) throw new Error('Received unexpected tasks data format.');
-                if (!Array.isArray(goalsResult)) throw new Error('Received unexpected goals data format.');
-                
-                projectColorMap = {}; 
-                nextColorIndex = 0;
-                allTasks = tasksResult.map(task => {
-                    getProjectColorClass(task.project || task.task);
-                    return {
-                        ...task,
-                        isKeyEvent: task.isKeyEvent === true || String(task.isKeyEvent).toUpperCase() === 'TRUE'
-                    };
-                });
-                allGoals = goalsResult;
-                renderCurrentView();
-            } catch (error) {
-                showMessage(errorDiv, `เกิดข้อผิดพลาดในการโหลดข้อมูล: ${error.message}`);
-                allTasks = [];
-                allGoals = [];
-                renderCurrentView();
-            } finally {
-                loadingDiv.classList.add('hidden');
-            }
-        };
-
-        function updatePrioritySelectionUI(selectorElement, priority) {
-            if (!selectorElement) return;
-            const buttons = selectorElement.querySelectorAll('.priority-btn');
-            let found = false;
-            buttons.forEach(button => {
-                const isSelected = button.dataset.priority === priority;
-                button.classList.toggle('selected', isSelected);
-                if (isSelected) found = true;
-            });
-            if (!found && buttons.length > 1) {
-                buttons[1].classList.add('selected'); 
-                if (selectorElement.id === 'priority-selector') {
-                    selectedPriority = 'สำคัญแต่ไม่เร่งด่วน';
-                }
-            }
-        }
-        
-        async function getAiSuggestions() {
-            const taskInput = document.getElementById('task-input');
-            const projectInput = document.getElementById('project-input');
-            const endDateInput = document.getElementById('end-date-input');
-            const prioritySelector = document.getElementById('priority-selector');
-            const mainTask = taskInput.value.trim();
-            if (!mainTask) return;
-            projectInput.placeholder = 'AI กำลังคิด...';
-            try {
-                const newTaskData = { task: mainTask, endDate: endDateInput.value };
-                const existingTasksForAI = allTasks.map(t => ({ task: t.task, project: t.project, priority: t.priority, endDate: t.endDate }));
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: 'getAiSuggestions', newTaskData, existingTasks: existingTasksForAI })
-                });
-                const result = await response.json();
-                if (result.status === 'success') {
-                    projectInput.value = result.projectName;
-                    updateProjectColorIndicator(result.projectName);
-                    if (result.suggestedPriority) {
-                        updatePrioritySelectionUI(prioritySelector, result.suggestedPriority);
-                        selectedPriority = result.suggestedPriority;
-                    }
-                } else { throw new Error(result.message); }
-            } catch(error) {
-                console.error('AI suggestions error:', error);
-                projectInput.placeholder = 'AI ไม่สามารถแนะนำได้';
-            }
-        }
-
-        function updateProjectColorIndicator(projectName) {
-            const projectColorIndicator = document.getElementById('project-color-indicator');
-            if(projectColorIndicator) {
-                const colorClass = getProjectColorClass(projectName);
-                projectColorIndicator.className = `project-color-dot mr-2 ${colorClass}`;
-            }
-        }
-        
-        async function handleAIBreakdown() {
-            const taskInput = document.getElementById('task-input');
-            const mainTask = taskInput.value.trim();
-            if (!mainTask) {
-                showMessage(errorDiv, 'กรุณาพิมพ์งานที่ต้องการให้ AI ช่วยแตกงานย่อย');
-                return;
-            }
-            const aiSuggestionsContainer = document.getElementById('ai-suggestions');
-            aiSuggestionsContainer.innerHTML = '<p class="text-center text-purple-600">AI กำลังคิด... ✨</p>';
-            showModal(aiModal);
-            try {
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: 'generateSubtasks', prompt: mainTask })
-                });
-                const result = await response.json();
-                if (result.status === 'success' && Array.isArray(result.suggestions)) {
-                    populateAIModal(result.suggestions);
-                } else {
-                    throw new Error(result.message || 'AI ไม่สามารถให้คำแนะนำได้');
-                }
-            } catch (error) {
-                aiSuggestionsContainer.innerHTML = `<p class="text-center text-red-600">เกิดข้อผิดพลาด: ${error.message}</p>`;
-            }
-        }
-
-        function populateAIModal(suggestions) {
-            const aiSuggestionsContainer = document.getElementById('ai-suggestions');
-            aiSuggestionsContainer.innerHTML = '';
-            if (!suggestions.length) {
-                aiSuggestionsContainer.innerHTML = '<p class="text-center text-gray-500">AI ไม่พบขั้นตอนย่อย</p>';
-                return;
-            }
-            suggestions.forEach((suggestion, index) => {
-                const div = document.createElement('div');
-                div.className = 'flex items-center justify-between bg-gray-50 p-2 rounded-md';
-                const labelWrapper = document.createElement('div');
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.id = `suggestion-${index}`;
-                checkbox.dataset.suggestion = JSON.stringify(suggestion);
-                checkbox.checked = true;
-                checkbox.className = 'h-5 w-5 rounded border-gray-300 text-purple-600';
-                const label = document.createElement('label');
-                label.htmlFor = `suggestion-${index}`;
-                label.textContent = suggestion.task;
-                label.className = 'ml-3 block text-sm font-medium text-gray-700';
-                labelWrapper.appendChild(checkbox);
-                labelWrapper.appendChild(label);
-                const durationText = document.createElement('span');
-                durationText.className = 'text-sm text-gray-500 font-mono';
-                durationText.textContent = `${suggestion.duration} นาที`;
-                div.appendChild(labelWrapper);
-                div.appendChild(durationText);
-                aiSuggestionsContainer.appendChild(div);
-            });
-        }
-        
-        async function handleAddSelectedAISuggestions() {
-            const initialStartDate = document.getElementById('ai-start-date').value;
-            const initialStartTime = document.getElementById('ai-start-time').value;
-            const projectInput = document.getElementById('project-input');
-            const projectName = projectInput.value.trim();
-            if (!initialStartDate || !initialStartTime || !projectName) {
-                showMessage(errorDiv, "กรุณาเลือกโปรเจกต์ วันที่ และเวลาเริ่มต้นก่อน");
-                return;
-            }
-            const aiSuggestionsContainer = document.getElementById('ai-suggestions');
-            const selectedSuggestions = [];
-            aiSuggestionsContainer.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
-                selectedSuggestions.push(JSON.parse(checkbox.dataset.suggestion));
-            });
-            if (selectedSuggestions.length === 0) {
-                hideModal(aiModal);
-                return;
-            }
-            let currentDateTime = new Date(`${initialStartDate}T${initialStartTime}`);
-            const proposedSchedule = [];
-            selectedSuggestions.forEach(suggestion => {
-                const startDateTime = new Date(currentDateTime.getTime());
-                const endDateTime = calculateEndTimeWithBreaks(startDateTime, suggestion.duration);
-                proposedSchedule.push({
-                    project: projectName,
-                    task: suggestion.task,
-                    startDate: formatDate(startDateTime),
-                    endDate: formatDate(endDateTime),
-                    startTime: formatTime(startDateTime),
-                    endTime: formatTime(endDateTime),
-                    priority: selectedPriority,
-                    isKeyEvent: false,
-                    status: 'ต้องทำ',
-                    note: ''
-                });
-                currentDateTime = new Date(endDateTime.getTime() + 60000); // Add 1 min break
-            });
-            await processTaskAddition(proposedSchedule);
-            hideModal(aiModal);
-        }
-        
-        async function processTaskAddition(tasksToAdd) {
-            const tempTasks = tasksToAdd.map(task => ({
-                ...task,
-                rowId: `temp-${Date.now()}-${Math.random()}`,
-                isOptimistic: true 
-            }));
-
-            allTasks.push(...tempTasks);
-            tasksToAdd.forEach(task => getProjectColorClass(task.project || task.task));
-            renderCurrentView(); 
-
-            document.getElementById('task-form').reset();
-            document.getElementById('project-input').value = '';
-            setDefaultDateTime();
-
-            try {
-                const response = await fetch(SCRIPT_URL, { 
-                    method: 'POST', 
-                    body: JSON.stringify({ action: 'createMultiple', tasks: tasksToAdd }) 
-                });
-                const result = await response.json();
-                if (result.status === 'success') {
-                    showMessage(successDiv, "เพิ่มรายการสำเร็จ");
-                    await fetchAllData();
-                } else {
-                    throw new Error(result.message);
-                }
-            } catch (error) {
-                showMessage(errorDiv, `เกิดข้อผิดพลาดในการเพิ่มข้อมูล: ${error.message}`);
-                allTasks = allTasks.filter(task => !task.isOptimistic);
-                renderCurrentView();
-            }
-        }
-        
-        function setDefaultDateTime() {
-            const startDateInput = document.getElementById('start-date-input');
-            const endDateInput = document.getElementById('end-date-input');
-            const startTimeInput = document.getElementById('start-time-input');
-            const endTimeInput = document.getElementById('end-time-input');
-            const aiStartDate = document.getElementById('ai-start-date');
-            const aiStartTime = document.getElementById('ai-start-time');
-            
-            const now = new Date();
-            const today = formatDate(now);
-            const currentTime = formatTime(now);
-            
-            if(startDateInput) startDateInput.value = today;
-            if(endDateInput) endDateInput.value = today;
-            if(startTimeInput) startTimeInput.value = currentTime;
-            if(endTimeInput) endTimeInput.value = currentTime;
-            if(aiStartDate) aiStartDate.value = today;
-            if(aiStartTime) aiStartTime.value = currentTime;
-        }
-
-        function attachFormEventListeners() {
-            const taskForm = document.getElementById('task-form');
-            if(!taskForm) return;
-
-            const taskInput = document.getElementById('task-input');
-            const aiBreakdownBtn = document.getElementById('ai-breakdown-btn');
-            const projectInput = document.getElementById('project-input');
-            const prioritySelector = document.getElementById('priority-selector');
-
-            if (taskInput) taskInput.addEventListener('blur', getAiSuggestions);
-            if (projectInput) projectInput.addEventListener('input', () => updateProjectColorIndicator(projectInput.value));
-            if (aiBreakdownBtn) aiBreakdownBtn.addEventListener('click', handleAIBreakdown);
-            if(prioritySelector) {
-                prioritySelector.addEventListener('click', (e) => {
-                    const button = e.target.closest('.priority-btn');
-                    if(button) {
-                        prioritySelector.querySelectorAll('.priority-btn').forEach(btn => btn.classList.remove('selected'));
-                        button.classList.add('selected');
-                        selectedPriority = button.dataset.priority;
-                    }
-                });
-            }
-            
-            taskForm.addEventListener('submit', async (e) => {
+            loginForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                const newTask = {
-                    project: document.getElementById('project-input').value,
-                    task: document.getElementById('task-input').value,
-                    priority: selectedPriority,
-                    startDate: document.getElementById('start-date-input').value,
-                    endDate: document.getElementById('end-date-input').value,
-                    startTime: document.getElementById('start-time-input').value,
-                    endTime: document.getElementById('end-time-input').value,
-                    isKeyEvent: document.getElementById('is-key-event-checkbox').checked,
-                    note: document.getElementById('note-input').value.trim(),
-                    status: 'ต้องทำ'
-                };
+                loginError.classList.add('hidden');
                 
-                const newStart = `${newTask.startDate}T${newTask.startTime}`;
-                const newEnd = `${newTask.endDate}T${newTask.endTime}`;
-                const conflictingTask = allTasks.find(t => t.rowId != newTask.rowId && isOverlapping(newStart, newEnd, `${t.startDate}T${t.startTime}`, `${t.endDate}T${t.endTime}`));
-
-                if (conflictingTask) {
-                    conflictingTaskData = newTask;
-                    document.getElementById('conflict-modal-text').innerHTML = `
-                        <p>งานใหม่: <strong>${newTask.task}</strong></p>
-                        <p>เวลา: ${newTask.startTime} - ${newTask.endTime}</p>
-                        <p class="mt-2">ซ้อนทับกับ:</p>
-                        <p><strong>${conflictingTask.task}</strong> (${conflictingTask.startTime} - ${conflictingTask.endTime})</p>
-                    `;
-                    showModal(conflictModal);
+                if (passwordInput.value === CORRECT_PASSWORD) {
+                    // Save login state for the session
+                    sessionStorage.setItem('isLoggedIn', 'true');
+                    
+                    // Hide login and show app
+                    loginScreen.classList.add('hidden');
+                    mainApp.classList.remove('hidden');
+                    
+                    // Initialize the main application
+                    initializeApp();
                 } else {
-                     await processTaskAddition([newTask]);
+                    loginError.classList.remove('hidden');
+                    passwordInput.value = '';
                 }
             });
-        }
-        
-        async function getAIAnalysis(view, tasks, goals) {
-            const contentDiv = document.getElementById('ai-analysis-content');
-            const actionsDiv = document.getElementById('ai-analysis-actions');
+        });
+        // --- END: LOGIN SCRIPT ---
 
-            if (tasks.length === 0 && goals.length === 0) {
-                contentDiv.innerHTML = '<p class="text-gray-500">ไม่มีข้อมูลงานหรือเป้าหมายสำหรับวิเคราะห์</p>';
-                return;
-            }
 
-            contentDiv.innerHTML = '<p class="text-purple-600 animate-pulse">AI กำลังวิเคราะห์... ✨</p>';
-            actionsDiv.classList.add('hidden');
+        // --- Main Application Logic (wrapped in a function) ---
+        function initializeApp() {
+            const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxb-yd8WVT1MF3FM9EDbltHgirLvo4PDPdjAzhnVVphTUMsd93rnUxVw3gZDij1YSjn/exec";
+            
+            // --- State Variables ---
+            let allTasks = [], allGoals = [], projectColorMap = {}, nextColorIndex = 0, currentView = 'daily', currentDateForView = new Date(), selectedPriority = 'สำคัญแต่ไม่เร่งด่วน';
+            let taskToDeleteId = null, goalToDeleteId = null;
+            let conflictingTaskData = null; 
+            let dailyViewCurrentPage = 1;
+            
+            // --- Constants ---
+            const projectColors = ['bg-red-400', 'bg-orange-400', 'bg-amber-400', 'bg-yellow-400', 'bg-lime-400', 'bg-green-400', 'bg-emerald-400', 'bg-teal-400', 'bg-cyan-400', 'bg-sky-400', 'bg-blue-400', 'bg-indigo-400', 'bg-violet-400', 'bg-purple-400', 'bg-fuchsia-400', 'bg-pink-400', 'bg-rose-400'];
+            const statuses = ['ต้องทำ', 'กำลังทำ', 'รอตรวจ', 'เสร็จแล้ว'];
+            const weekdays = ['จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.', 'อา.'];
+            const weekdaysFull = ['จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์', 'อาทิตย์'];
+            const months = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+            const DAILY_ITEMS_PER_PAGE = 10;
+            
+            // --- DOM Element References ---
+            let loadingDiv, errorDiv, successDiv, viewSwitcher, viewHeader, taskListContainer, addTaskWrapper, templates;
+            let aiModal, editModal, confirmModal, conflictModal, goalModal; 
+            
+            // --- Utility Functions ---
+            const showMessage = (element, message, duration = 3000) => { element.textContent = message; element.classList.remove('hidden'); setTimeout(() => element.classList.add('hidden'), duration); };
+            const formatDate = (date) => date.toISOString().split('T')[0];
+            const formatTime = (date) => date.toTimeString().slice(0, 5);
+            const getProjectColorClass = (projectName) => { if (!projectName) return 'bg-gray-400'; if (!projectColorMap[projectName]) { projectColorMap[projectName] = projectColors[nextColorIndex % projectColors.length]; nextColorIndex++; } return projectColorMap[projectName]; };
+            const getPriorityInfo = (priority) => { switch (priority) { case 'สำคัญและเร่งด่วน': return { text: 'ทำทันที', classes: 'bg-red-100 text-red-800', icon: '🔥' }; case 'สำคัญแต่ไม่เร่งด่วน': return { text: 'วางแผน', classes: 'bg-blue-100 text-blue-800', icon: '📅' }; case 'ไม่สำคัญแต่เร่งด่วน': return { text: 'มอบหมาย', classes: 'bg-orange-100 text-orange-800', icon: '👥' }; case 'ไม่สำคัญและไม่เร่งด่วน': return { text: 'ลด/เลิก', classes: 'bg-gray-100 text-gray-800', icon: '🗑️' }; default: return { text: 'วางแผน', classes: 'bg-blue-100 text-blue-800', icon: '📅' }; } };
+            const getStatusInfo = (status) => { switch (status) { case 'กำลังทำ': return { text: 'กำลังทำ', classes: 'bg-yellow-100 text-yellow-800' }; case 'รอตรวจ': return { text: 'รอตรวจ', classes: 'bg-purple-100 text-purple-800' }; case 'เสร็จแล้ว': return { text: 'เสร็จแล้ว', classes: 'bg-green-100 text-green-800' }; default: return { text: 'ต้องทำ', classes: 'bg-blue-100 text-blue-800' }; } };
+            const isWorkingHour = (date) => { const hour = date.getHours(); return (hour >= 5 && hour < 6) || (hour >= 8 && hour < 12) || (hour >= 13 && hour < 22); };
+            const calculateAndFormatDuration = (startDate, startTime, endDate, endTime) => { if (!startDate || !startTime || !endDate || !endTime) return ''; let startDateTime = new Date(`${startDate}T${startTime}`); const endDateTime = new Date(`${endDate}T${endTime}`); if (startDateTime >= endDateTime) return ''; let workingMinutes = 0; while (startDateTime < endDateTime) { if (isWorkingHour(startDateTime)) workingMinutes++; startDateTime.setMinutes(startDateTime.getMinutes() + 1); } if (workingMinutes <= 0) return ''; const hours = Math.floor(workingMinutes / 60); const minutes = Math.round(workingMinutes % 60); let durationString = ''; if (hours > 0) durationString += `${hours} ชม. `; if (minutes > 0) durationString += `${minutes} นาที`; return durationString.trim(); };
+            const calculateEndTimeWithBreaks = (startTime, durationMinutes) => { let currentTime = new Date(startTime); let remainingDuration = durationMinutes; while (remainingDuration > 0) { if(isWorkingHour(currentTime)) { remainingDuration--; } currentTime.setMinutes(currentTime.getMinutes() + 1); } currentTime.setMinutes(currentTime.getMinutes() - 1); return currentTime; };
+            const isOverlapping = (startA, endA, startB, endB) => { return new Date(startA) < new Date(endB) && new Date(endA) > new Date(startB); };
+            
+            // --- Modal Control Functions ---
+            const showModal = (modal) => { modal.classList.remove('hidden'); modal.classList.add('flex'); };
+            const hideModal = (modal) => { modal.classList.add('hidden'); modal.classList.remove('flex'); };
 
-            try {
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: 'getLifeAnalysis', view: view, tasks: tasks, goals: goals })
+            const getAggregatedItemsForDate = (date) => {
+                const items = new Set();
+                const dayStart = new Date(date);
+                dayStart.setHours(0, 0, 0, 0);
+                const dayEnd = new Date(date);
+                dayEnd.setHours(23, 59, 59, 999);
+
+                const tasksForDay = allTasks.filter(t => {
+                    const taskStart = new Date(t.startDate);
+                    const taskEnd = new Date(t.endDate);
+                    return taskStart <= dayEnd && taskEnd >= dayStart;
                 });
-                const result = await response.json();
-                if (result.status === 'success') {
-                    const analysisContainer = document.createElement('div');
-                    analysisContainer.className = 'text-left whitespace-pre-wrap w-full';
-                    analysisContainer.innerText = result.analysis;
-                    contentDiv.innerHTML = '';
-                    contentDiv.appendChild(analysisContainer);
 
-                    actionsDiv.classList.remove('hidden');
-                    const saveBtn = document.getElementById('save-analysis-btn');
-                    saveBtn.onclick = () => saveAIAnalysis(result.analysis, view);
-                    saveBtn.textContent = 'บันทึกคำแนะนำ';
-                    saveBtn.disabled = false;
-
-                } else {
-                    throw new Error(result.message);
-                }
-            } catch (error) {
-                contentDiv.innerHTML = `<p class="text-red-600">เกิดข้อผิดพลาด: ${error.message}</p>`;
-            }
-        }
-
-        async function saveAIAnalysis(analysisText, view) {
-            const saveBtn = document.getElementById('save-analysis-btn');
-            const originalText = saveBtn.textContent;
-            saveBtn.textContent = 'กำลังบันทึก...';
-            saveBtn.disabled = true;
-
-            try {
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: 'saveRecommendation', analysisText: analysisText, viewType: view })
+                tasksForDay.forEach(task => {
+                    if (task.project) {
+                        items.add(task.project);
+                    } else {
+                        items.add(task.task);
+                    }
                 });
-                const result = await response.json();
-                if (result.status === 'success') {
-                    showMessage(successDiv, "บันทึกคำแนะนำสำเร็จ!");
-                    saveBtn.textContent = 'บันทึกแล้ว';
-                } else {
-                    throw new Error(result.message);
-                }
-            } catch (error) {
-                showMessage(errorDiv, `เกิดข้อผิดพลาดในการบันทึก: ${error.message}`);
-                saveBtn.textContent = originalText;
-                saveBtn.disabled = false;
-            }
-        }
-
-        // --- GOAL FUNCTIONS ---
-        window.openGoalModal = (goal = null) => {
-            const form = document.getElementById('goal-form');
-            form.reset();
-            document.getElementById('ai-goal-suggestion-area').classList.add('hidden');
-            if (goal) {
-                document.getElementById('goal-modal-title').textContent = 'แก้ไขเป้าหมาย';
-                document.getElementById('goal-row-id').value = goal.rowId;
-                document.getElementById('goal-title-input').value = goal.title;
-                document.getElementById('goal-description-input').value = goal.description;
-                document.getElementById('goal-time-horizon-select').value = goal.timeHorizon;
-            } else {
-                document.getElementById('goal-modal-title').textContent = 'เพิ่มเป้าหมายใหม่';
-                document.getElementById('goal-row-id').value = '';
-            }
-            showModal(goalModal);
-        }
-
-        window.handleDeleteGoal = (rowId) => {
-            taskToDeleteId = null;
-            goalToDeleteId = rowId;
-            document.getElementById('confirm-modal-text').textContent = 'คุณแน่ใจหรือไม่ว่าต้องการลบเป้าหมายนี้?';
-            showModal(confirmModal);
-        };
-
-        const renderGoalsView = () => {
-            viewHeader.innerHTML = `
-                <h2 class="text-2xl font-bold text-gray-700">เป้าหมายทั้งหมด</h2>
-                <button onclick="openGoalModal()" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition">
-                    + เพิ่มเป้าหมาย
-                </button>
-            `;
-            let html = '<div class="space-y-4">';
-            if (allGoals.length > 0) {
-                allGoals.forEach(goal => {
-                    html += `
-                        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-yellow-400">
-                           <div class="flex justify-between items-start">
-                                <div class="flex-grow">
-                                    <p class="font-bold text-lg text-gray-800">${goal.title}</p>
-                                    <p class="text-sm text-gray-500 mt-1">${goal.timeHorizon}</p>
-                                    <p class="text-gray-600 mt-2 whitespace-pre-wrap">${goal.description}</p>
-                                </div>
-                                <div class="flex flex-col gap-2 ml-4">
-                                    <button class="font-semibold py-1 px-3 rounded-md transition-colors duration-200 text-sm bg-gray-100 text-gray-700 hover:bg-gray-200" onclick='openGoalModal(${JSON.stringify(goal)})'>แก้ไข</button>
-                                    <button class="font-semibold py-1 px-3 rounded-md transition-colors duration-200 text-sm bg-red-100 text-red-700 hover:bg-red-200" onclick="handleDeleteGoal(${goal.rowId})">ลบ</button>
-                                </div>
-                           </div>
-                        </div>
-                    `;
-                });
-            } else {
-                html += '<p class="text-center text-gray-500 py-8">ยังไม่มีการตั้งเป้าหมาย</p>';
-            }
-            html += '</div>';
-            taskListContainer.innerHTML = html;
-        };
-
-        async function handleGoalFormSubmit(e) {
-            e.preventDefault();
-            const rowId = document.getElementById('goal-row-id').value;
-            const goalData = {
-                title: document.getElementById('goal-title-input').value,
-                description: document.getElementById('goal-description-input').value,
-                timeHorizon: document.getElementById('goal-time-horizon-select').value,
+                return Array.from(items);
             };
 
-            const action = rowId ? 'updateGoal' : 'createGoal';
-            if (rowId) goalData.rowId = rowId;
+            // --- Core Task Functions ---
+            window.openEditModal = (task) => {
+                document.getElementById('edit-row-id').value = task.rowId;
+                document.getElementById('edit-project-input').value = task.project;
+                document.getElementById('edit-task-input').value = task.task;
+                document.getElementById('edit-start-date-input').value = task.startDate;
+                document.getElementById('edit-end-date-input').value = task.endDate;
+                document.getElementById('edit-start-time-input').value = task.startTime;
+                document.getElementById('edit-end-time-input').value = task.endTime;
+                document.getElementById('edit-status').value = task.status;
+                document.getElementById('edit-is-key-event-checkbox').checked = task.isKeyEvent;
+                document.getElementById('edit-note-input').value = task.note || '';
+                updatePrioritySelectionUI(document.getElementById('edit-priority-selector'), task.priority);
+                showModal(editModal);
+            };
 
-            try {
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action, ...goalData })
-                });
-                const result = await response.json();
-                if (result.status !== 'success') throw new Error(result.message);
+            window.deleteTask = (rowId) => {
+                taskToDeleteId = rowId;
+                goalToDeleteId = null;
+                document.getElementById('confirm-modal-text').textContent = 'คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้?';
+                showModal(confirmModal);
+            };
+
+            window.updateTaskStatus = async (rowId, newStatus) => {
+                const taskIndex = allTasks.findIndex(t => t.rowId === rowId);
+                if (taskIndex === -1) return;
+
+                const originalTask = { ...allTasks[taskIndex] };
+                allTasks[taskIndex].status = newStatus;
+                renderCurrentView(); 
                 
-                showMessage(successDiv, `บันทึกเป้าหมายสำเร็จ`);
-                hideModal(goalModal);
-                await fetchAllData();
-            } catch (error) {
-                showMessage(errorDiv, `เกิดข้อผิดพลาด: ${error.message}`);
-            }
-        }
+                const dataToUpdate = { ...allTasks[taskIndex] };
+                delete dataToUpdate.isOptimistic;
+                delete dataToUpdate.rowId;
 
-        async function handleGetSmartGoal() {
-            const draftTitle = document.getElementById('goal-title-input').value;
-            const draftDescription = document.getElementById('goal-description-input').value;
-            const timeHorizon = document.getElementById('goal-time-horizon-select').value;
-            const suggestionArea = document.getElementById('ai-goal-suggestion-area');
-
-            if (!draftTitle) {
-                showMessage(errorDiv, "กรุณาพิมพ์เป้าหมายร่างแรกก่อน");
-                return;
-            }
-
-            suggestionArea.classList.remove('hidden');
-            suggestionArea.innerHTML = '<p class="text-purple-600 animate-pulse text-center">AI กำลังคิด... ✨</p>';
-
-            try {
-                 const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: 'getSmartGoalSuggestion', draftTitle, draftDescription, timeHorizon })
-                });
-                const result = await response.json();
-                if (result.status !== 'success') throw new Error(result.message);
-
-                const suggestion = result.suggestion;
-                suggestionArea.innerHTML = `
-                    <p class="font-bold text-sm text-gray-700">AI แนะนำ:</p>
-                    <p class="mt-2 p-2 bg-white rounded"><b>ชื่อเป้าหมาย:</b> ${suggestion.suggestedTitle}</p>
-                    <p class="mt-2 p-2 bg-white rounded"><b>คำอธิบาย:</b> ${suggestion.suggestedDescription}</p>
-                    <div class="text-center mt-3">
-                        <button type="button" id="use-ai-suggestion-btn" class="text-sm bg-purple-200 text-purple-800 font-semibold py-1 px-3 rounded-lg hover:bg-purple-300">
-                            M ใช้ข้อแนะนำนี้
-                        </button>
-                    </div>
-                `;
-
-                document.getElementById('use-ai-suggestion-btn').addEventListener('click', () => {
-                    document.getElementById('goal-title-input').value = suggestion.suggestedTitle;
-                    document.getElementById('goal-description-input').value = suggestion.suggestedDescription;
-                    suggestionArea.classList.add('hidden');
-                });
-
-            } catch(error) {
-                suggestionArea.innerHTML = `<p class="text-red-600 text-center">เกิดข้อผิดพลาด: ${error.message}</p>`;
-            }
-        }
-
-
-        // --- Main Initialization ---
-        document.addEventListener('DOMContentLoaded', async () => {
-            loadingDiv = document.getElementById('loading');
-            errorDiv = document.getElementById('error');
-            successDiv = document.getElementById('success');
-            viewSwitcher = document.getElementById('view-switcher');
-            viewHeader = document.getElementById('view-header');
-            taskListContainer = document.getElementById('task-list-container');
-            addTaskWrapper = document.getElementById('add-task-wrapper');
-            templates = document.getElementById('templates');
-            aiModal = document.getElementById('ai-modal');
-            editModal = document.getElementById('edit-modal');
-            confirmModal = document.getElementById('confirm-modal');
-            conflictModal = document.getElementById('conflict-modal');
-            goalModal = document.getElementById('goal-modal');
-
-            const formTemplate = templates.querySelector('#add-task-container-template');
-            if (formTemplate) {
-                addTaskWrapper.innerHTML = formTemplate.innerHTML;
-                attachFormEventListeners();
-                setDefaultDateTime();
-            } else {
-                console.error("Add task container template not found!");
-            }
-            
-            viewSwitcher.addEventListener('click', (e) => {
-                const button = e.target.closest('button');
-                if (button) {
-                    currentView = button.dataset.view;
-                    currentDateForView = new Date();
-                    dailyViewCurrentPage = 1; 
-                    viewSwitcher.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    renderCurrentView();
-                }
-            });
-
-            // --- ALL MODAL EVENT LISTENERS ---
-            document.getElementById('ai-cancel-btn').addEventListener('click', () => hideModal(aiModal));
-            document.getElementById('ai-add-selected-btn').addEventListener('click', handleAddSelectedAISuggestions);
-
-            document.getElementById('edit-cancel-btn').addEventListener('click', () => hideModal(editModal));
-            document.getElementById('edit-task-form').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const rowId = document.getElementById('edit-row-id').value;
-                const selectedButton = document.getElementById('edit-priority-selector').querySelector('.selected');
-                const updatedData = {
-                    project: document.getElementById('edit-project-input').value,
-                    task: document.getElementById('edit-task-input').value,
-                    priority: selectedButton ? selectedButton.dataset.priority : 'สำคัญแต่ไม่เร่งด่วน',
-                    startDate: document.getElementById('edit-start-date-input').value,
-                    endDate: document.getElementById('edit-end-date-input').value,
-                    startTime: document.getElementById('edit-start-time-input').value,
-                    endTime: document.getElementById('edit-end-time-input').value,
-                    status: document.getElementById('edit-status').value,
-                    isKeyEvent: document.getElementById('edit-is-key-event-checkbox').checked,
-                    note: document.getElementById('edit-note-input').value.trim()
-                };
                 try {
                     const response = await fetch(SCRIPT_URL, {
                         method: 'POST',
                         body: JSON.stringify({ 
                             action: 'update', 
-                            rowId, 
-                            ...updatedData
+                            rowId: rowId, 
+                            ...dataToUpdate 
                         })
                     });
                     const result = await response.json();
+                    if (result.status !== 'success') {
+                        throw new Error(result.message || 'Unknown error from server');
+                    }
+                } catch (error) {
+                    showMessage(errorDiv, `เกิดข้อผิดพลาดในการอัปเดต: ${error.message}`);
+                    allTasks[taskIndex] = originalTask; // Rollback on failure
+                    renderCurrentView();
+                }
+            };
+
+            // --- Rendering Functions ---
+            const renderTaskItem = (task) => {
+                const projectColorClass = getProjectColorClass(task.project);
+                const priorityInfo = getPriorityInfo(task.priority);
+                const statusInfo = getStatusInfo(task.status);
+                const duration = calculateAndFormatDuration(task.startDate, task.startTime, task.endDate, task.endTime);
+                const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+                const startDatePart = new Date(task.startDate).toLocaleDateString('th-TH', dateOptions);
+                const endDatePart = new Date(task.endDate).toLocaleDateString('th-TH', dateOptions);
+                let dateDisplay = startDatePart === endDatePart ? startDatePart : `${startDatePart} - ${endDatePart}`;
+                return `
+                    <div class="task-item ${task.isOptimistic ? 'optimistic' : ''} flex flex-col sm:flex-row items-start bg-white p-4 rounded-xl shadow-sm transition hover:shadow-md border-l-4 ${projectColorClass.replace('bg-', 'border-')}">
+                        <div class="flex-grow w-full">
+                            <div class="flex items-center justify-between w-full mb-2 gap-2 flex-wrap">
+                                <div class="flex items-center">
+                                    <span class="project-color-dot ${projectColorClass}"></span>
+                                    <span class="font-bold text-sm text-gray-600">${task.project || 'ไม่มีโปรเจกต์'}</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="flex items-center text-xs font-bold px-2 py-1 rounded-full ${priorityInfo.classes}">
+                                        <span class="mr-1">${priorityInfo.icon}</span> ${priorityInfo.text}
+                                    </div>
+                                    <select class="status-select text-xs font-bold py-1 pl-2 border-0 rounded-full focus:ring-2 focus:ring-offset-1 transition ${statusInfo.classes}" onchange="updateTaskStatus(${task.rowId}, this.value)">
+                                        ${statuses.map(s => `<option value="${s}" ${task.status === s ? 'selected' : ''}>${s}</option>`).join('')}
+                                    </select>
+                                </div>
+                            </div>
+                            <p class="font-semibold text-gray-900 ml-5 ${task.status === 'เสร็จแล้ว' ? 'task-completed' : ''}">${task.task}</p>
+                            ${task.note ? `<div class="mt-2 ml-5 p-2 bg-gray-50 rounded-lg text-sm text-gray-600 whitespace-pre-wrap border-l-2">${task.note}</div>` : ''}
+                            <p class="text-sm text-gray-500 ml-5 mt-2 flex items-center flex-wrap gap-x-2">
+                                <span>${dateDisplay} | เวลา: ${task.startTime || 'N/A'} - ${task.endTime || 'N/A'} น.</span>
+                                ${duration ? `<span class="text-xs font-medium bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">⏱️ ${duration}</span>` : ''}
+                            </p>
+                        </div>
+                        <div class="actions flex flex-wrap gap-2 mt-3 sm:mt-0 sm:ml-4">
+                            <button class="font-semibold py-1 px-3 rounded-md transition-colors duration-200 text-sm bg-gray-100 text-gray-700 hover:bg-gray-200" onclick='openEditModal(${JSON.stringify(task)})'>แก้ไข</button>
+                            <button class="font-semibold py-1 px-3 rounded-md transition-colors duration-200 text-sm bg-red-100 text-red-700 hover:bg-red-200" onclick="deleteTask(${task.rowId})">ลบ</button>
+                        </div>
+                    </div>`;
+            };
+            
+            const renderDailyView = () => {
+                const todayStr = formatDate(new Date());
+
+                const sortedTasks = [...allTasks].sort((a, b) => {
+                    const aIsToday = a.startDate === todayStr;
+                    const bIsToday = b.startDate === todayStr;
+
+                    if (aIsToday && !bIsToday) return -1;
+                    if (!aIsToday && bIsToday) return 1;
+
+                    const aDateTime = new Date(`${a.startDate}T${a.startTime || '00:00'}`);
+                    const bDateTime = new Date(`${b.startDate}T${b.startTime || '00:00'}`);
+                    return aDateTime - bDateTime;
+                });
+
+                const totalPages = Math.ceil(sortedTasks.length / DAILY_ITEMS_PER_PAGE);
+                
+                viewHeader.innerHTML = `<h2 class="text-2xl font-bold text-gray-700">รายการงานทั้งหมด ${totalPages > 1 ? `(หน้า ${dailyViewCurrentPage} / ${totalPages})` : ''}</h2>`;
+                
+                if (sortedTasks.length === 0) {
+                    taskListContainer.innerHTML = '<p class="text-center text-gray-500 py-8">ยังไม่มีรายการที่ต้องทำ</p>';
+                } else {
+                    const startIndex = (dailyViewCurrentPage - 1) * DAILY_ITEMS_PER_PAGE;
+                    const paginatedTasks = sortedTasks.slice(startIndex, startIndex + DAILY_ITEMS_PER_PAGE);
+                    let html = `<div class="space-y-4">${paginatedTasks.map(renderTaskItem).join('')}</div>`;
+
+                    if (totalPages > 1) {
+                        html += `
+                            <div class="flex justify-between items-center mt-6">
+                                <button id="prev-page-btn" class="bg-white px-4 py-2 rounded-lg shadow-sm font-semibold text-gray-700 hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed" ${dailyViewCurrentPage === 1 ? 'disabled' : ''}>
+                                    &lt; ก่อนหน้า
+                                </button>
+                                <span class="text-sm text-gray-600">หน้า ${dailyViewCurrentPage} จาก ${totalPages}</span>
+                                <button id="next-page-btn" class="bg-white px-4 py-2 rounded-lg shadow-sm font-semibold text-gray-700 hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed" ${dailyViewCurrentPage === totalPages ? 'disabled' : ''}>
+                                    ต่อไป &gt;
+                                </button>
+                            </div>
+                        `;
+                    }
+                    taskListContainer.innerHTML = html;
+
+                    if (totalPages > 1) {
+                        document.getElementById('prev-page-btn').addEventListener('click', () => {
+                            if (dailyViewCurrentPage > 1) {
+                                dailyViewCurrentPage--;
+                                renderDailyView();
+                            }
+                        });
+                        document.getElementById('next-page-btn').addEventListener('click', () => {
+                            if (dailyViewCurrentPage < totalPages) {
+                                dailyViewCurrentPage++;
+                                renderDailyView();
+                            }
+                        });
+                    }
+                }
+
+                const tasksForToday = allTasks.filter(t => t.startDate === todayStr);
+                taskListContainer.innerHTML += getAIAnalysisHTML();
+                document.getElementById('get-analysis-btn').addEventListener('click', () => getAIAnalysis('daily', tasksForToday, allGoals));
+            };
+
+            const renderWeeklyView = () => { 
+                const startOfWeek = new Date(currentDateForView); 
+                startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + (startOfWeek.getDay() === 0 ? -6 : 1)); 
+                startOfWeek.setHours(0,0,0,0); 
+                const endOfWeek = new Date(startOfWeek); 
+                endOfWeek.setDate(endOfWeek.getDate() + 6); 
+                endOfWeek.setHours(23,59,59,999); 
+                viewHeader.innerHTML = `<button id="prev-week" class="p-2 rounded-full hover:bg-gray-200 transition">&lt;</button><h2 class="text-2xl font-bold text-gray-700">${startOfWeek.toLocaleDateString('th-TH', {day:'numeric', month:'short'})} - ${endOfWeek.toLocaleDateString('th-TH', {day:'numeric', month:'short', year:'numeric'})}</h2><button id="next-week" class="p-2 rounded-full hover:bg-gray-200 transition">&gt;</button>`; 
+                let weeklyHtml = '<div class="space-y-6">'; 
+                for(let i=0; i<7; i++) { 
+                    const day = new Date(startOfWeek); 
+                    day.setDate(day.getDate() + i); 
+                    const itemsForDay = getAggregatedItemsForDate(day);
+                    weeklyHtml += `<div><h3 class="font-bold text-lg mb-2 text-gray-600">${weekdaysFull[i]} <span class="text-gray-400 font-normal">${day.getDate()}</span></h3><div class="space-y-2 pl-4 border-l-2">`;
+                    if (itemsForDay.length > 0) {
+                        weeklyHtml += itemsForDay.map(item => `
+                            <div class="flex items-center text-sm p-2 bg-white rounded-md shadow-sm">
+                               <span class="project-color-dot ${getProjectColorClass(item)}"></span>
+                               <span class="text-gray-700">${item}</span>
+                            </div>
+                        `).join('');
+                    } else {
+                        weeklyHtml += '<p class="text-gray-400 text-sm ml-2">ไม่มีงานสำหรับวันนี้</p>';
+                    }
+                    weeklyHtml += `</div></div>`;
+                } 
+                weeklyHtml += '</div>'; 
+                taskListContainer.innerHTML = weeklyHtml; 
+                document.getElementById('prev-week').onclick = () => { currentDateForView.setDate(currentDateForView.getDate() - 7); renderCurrentView(); }; 
+                document.getElementById('next-week').onclick = () => { currentDateForView.setDate(currentDateForView.getDate() + 7); renderCurrentView(); }; 
+                
+                const tasksForWeek = allTasks.filter(t => {
+                    const taskStart = new Date(t.startDate);
+                    return taskStart >= startOfWeek && taskStart <= endOfWeek;
+                });
+                taskListContainer.innerHTML += getAIAnalysisHTML();
+                document.getElementById('get-analysis-btn').addEventListener('click', () => getAIAnalysis('weekly', tasksForWeek, allGoals));
+            };
+            
+            const renderMonthlyView = () => { 
+                const year = currentDateForView.getFullYear(); 
+                const month = currentDateForView.getMonth(); 
+                viewHeader.innerHTML = `<button id="prev-month" class="p-2 rounded-full hover:bg-gray-200 transition">&lt;</button><h2 class="text-2xl font-bold text-gray-700">${months[month]} ${year + 543}</h2><button id="next-month" class="p-2 rounded-full hover:bg-gray-200 transition">&gt;</button>`; 
+                const firstDayOfMonth = new Date(year, month, 1).getDay(); 
+                const daysInMonth = new Date(year, month + 1, 0).getDate(); 
+                const firstDay = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1; 
+                let calendarHtml = '<div class="bg-white rounded-lg shadow-sm overflow-hidden"><div class="calendar-grid border-t border-l border-gray-200">'; 
+                weekdays.forEach(day => calendarHtml += `<div class="text-center font-bold p-2 bg-gray-50 border-r border-b border-gray-200 text-sm">${day}</div>`); 
+                let dayCounter = 1; 
+                for (let i = 0; i < 42; i++) { 
+                    if (i < firstDay || dayCounter > daysInMonth) { 
+                        calendarHtml += `<div class="calendar-day other-month border-r border-b border-gray-200"></div>`; 
+                    } else { 
+                        const currentDate = new Date(year, month, dayCounter); 
+                        const itemsForDay = getAggregatedItemsForDate(currentDate);
+                        calendarHtml += `<div class="calendar-day p-2 border-r border-b border-gray-200 relative"><span class="font-semibold text-sm">${dayCounter}</span><div class="flex flex-col gap-1 mt-2 overflow-hidden">`;
+                        calendarHtml += itemsForDay.slice(0, 3).map(item => { 
+                            const colorClass = getProjectColorClass(item);
+                            return `<div title="${item}" class="text-xs truncate rounded-sm px-1 ${colorClass.replace('bg-','text-').replace('-400', '-800')} ${colorClass.replace('400', '100')}">${item}</div>`;
+                        }).join('');
+                        if (itemsForDay.length > 3) {
+                            calendarHtml += `<div class="text-xs text-gray-500 mt-1">+ ${itemsForDay.length - 3} เพิ่มเติม</div>`;
+                        }
+                        calendarHtml += `</div></div>`; 
+                        dayCounter++; 
+                    } 
+                } 
+                calendarHtml += '</div></div>'; 
+                taskListContainer.innerHTML = calendarHtml; 
+                document.getElementById('prev-month').onclick = () => { currentDateForView.setMonth(currentDateForView.getMonth() - 1); renderCurrentView(); }; 
+                document.getElementById('next-month').onclick = () => { currentDateForView.setMonth(currentDateForView.getMonth() + 1); renderCurrentView(); }; 
+
+                const tasksForMonth = allTasks.filter(t => {
+                    const taskDate = new Date(t.startDate);
+                    return taskDate.getFullYear() === year && taskDate.getMonth() === month;
+                });
+                taskListContainer.innerHTML += getAIAnalysisHTML();
+                document.getElementById('get-analysis-btn').addEventListener('click', () => getAIAnalysis('monthly', tasksForMonth, allGoals));
+            };
+            
+            const renderYearlyView = () => { 
+                const year = currentDateForView.getFullYear(); 
+                viewHeader.innerHTML = `<button id="prev-year" class="p-2 rounded-full hover:bg-gray-200 transition">&lt;</button><h2 class="text-2xl font-bold text-gray-700">ภาพรวมปี ${year + 543}</h2><button id="next-year" class="p-2 rounded-full hover:bg-gray-200 transition">&gt;</button>`; 
+                
+                let yearlyHtml = '<div class="bg-white rounded-lg shadow-sm p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">'; 
+                
+                let hasContent = false;
+                for (let i = 0; i < 12; i++) { 
+                    const tasksInMonth = allTasks.filter(t => new Date(t.startDate).getFullYear() === year && new Date(t.startDate).getMonth() === i);
+                    const monthItemsSet = new Set();
+                    tasksInMonth.forEach(task => {
+                        if (task.project) monthItemsSet.add(task.project);
+                        else monthItemsSet.add(task.task);
+                    });
+
+                    const uniqueItemsInMonth = Array.from(monthItemsSet);
+                    
+                    yearlyHtml += `<div><h3 class="font-bold text-lg text-gray-700 mb-2">${months[i]}</h3><div class="space-y-1">`;
+                    if (uniqueItemsInMonth.length > 0) {
+                        hasContent = true;
+                        uniqueItemsInMonth.forEach(item => {
+                            yearlyHtml += `<div class="flex items-center text-sm">
+                                <span class="project-color-dot ${getProjectColorClass(item)}"></span>
+                                <span class="text-gray-600">${item}</span>
+                            </div>`;
+                        });
+                    } else {
+                        yearlyHtml += `<p class="text-sm text-gray-400 italic">ไม่มีโปรเจกต์หรืองาน</p>`;
+                    }
+                     yearlyHtml += `</div></div>`;
+                } 
+                
+                yearlyHtml += '</div>'; 
+                
+                if (!hasContent) {
+                     yearlyHtml = '<div class="bg-white rounded-lg shadow-sm p-6"><p class="text-center text-gray-500 py-8">ไม่พบข้อมูลสำหรับปีนี้</p></div>';
+                }
+
+                taskListContainer.innerHTML = yearlyHtml; 
+                document.getElementById('prev-year').onclick = () => { currentDateForView.setFullYear(currentDateForView.getFullYear() - 1); renderCurrentView(); }; 
+                document.getElementById('next-year').onclick = () => { currentDateForView.setFullYear(currentDateForView.getFullYear() + 1); renderCurrentView(); }; 
+                
+                const tasksForYear = allTasks.filter(t => new Date(t.startDate).getFullYear() === year);
+                taskListContainer.innerHTML += getAIAnalysisHTML();
+                document.getElementById('get-analysis-btn').addEventListener('click', () => getAIAnalysis('yearly', tasksForYear, allGoals));
+            };
+
+            const getAIAnalysisHTML = () => {
+                return `
+                <div id="ai-analysis-container" class="mt-8 pt-6 border-t-2 border-dashed">
+                    <h3 class="text-xl font-bold text-gray-700 mb-4 text-center">AI วิเคราะห์และให้คำแนะนำ</h3>
+                    <div id="ai-analysis-content" class="bg-white p-6 rounded-xl shadow-sm min-h-[100px] text-center flex items-center justify-center border">
+                        <button id="get-analysis-btn" class="bg-purple-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-purple-600 transition shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                            ✨ วิเคราะห์ภาพรวม
+                        </button>
+                    </div>
+                    <div id="ai-analysis-actions" class="text-center mt-4 hidden">
+                        <button id="save-analysis-btn" class="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600 transition">
+                            บันทึกคำแนะนำ
+                        </button>
+                    </div>
+                </div>
+                `;
+            };
+            
+            const renderCurrentView = () => {
+                if (currentView === 'goals') {
+                    addTaskWrapper.style.display = 'none';
+                    renderGoalsView();
+                } else {
+                    addTaskWrapper.style.display = 'block';
+                    switch (currentView) {
+                        case 'daily': renderDailyView(); break;
+                        case 'weekly': renderWeeklyView(); break;
+                        case 'monthly': renderMonthlyView(); break;
+                        case 'yearly': renderYearlyView(); break;
+                    }
+                }
+            };
+
+            const fetchAllData = async () => {
+                loadingDiv.classList.remove('hidden');
+                try {
+                    // Fetch both tasks and goals
+                    const [tasksResponse, goalsResponse] = await Promise.all([
+                        fetch(`${SCRIPT_URL}?action=read`),
+                        fetch(`${SCRIPT_URL}?action=readGoals`)
+                    ]);
+
+                    if (!tasksResponse.ok) throw new Error(`Tasks Network Error: ${tasksResponse.statusText}`);
+                    if (!goalsResponse.ok) throw new Error(`Goals Network Error: ${goalsResponse.statusText}`);
+
+                    const tasksResult = await tasksResponse.json();
+                    const goalsResult = await goalsResponse.json();
+
+                    if (!Array.isArray(tasksResult)) throw new Error('Received unexpected tasks data format.');
+                    if (!Array.isArray(goalsResult)) throw new Error('Received unexpected goals data format.');
+                    
+                    projectColorMap = {}; 
+                    nextColorIndex = 0;
+                    allTasks = tasksResult.map(task => {
+                        getProjectColorClass(task.project || task.task);
+                        return {
+                            ...task,
+                            isKeyEvent: task.isKeyEvent === true || String(task.isKeyEvent).toUpperCase() === 'TRUE'
+                        };
+                    });
+                    allGoals = goalsResult;
+                    renderCurrentView();
+                } catch (error) {
+                    showMessage(errorDiv, `เกิดข้อผิดพลาดในการโหลดข้อมูล: ${error.message}`);
+                    allTasks = [];
+                    allGoals = [];
+                    renderCurrentView();
+                } finally {
+                    loadingDiv.classList.add('hidden');
+                }
+            };
+
+            function updatePrioritySelectionUI(selectorElement, priority) {
+                if (!selectorElement) return;
+                const buttons = selectorElement.querySelectorAll('.priority-btn');
+                let found = false;
+                buttons.forEach(button => {
+                    const isSelected = button.dataset.priority === priority;
+                    button.classList.toggle('selected', isSelected);
+                    if (isSelected) found = true;
+                });
+                if (!found && buttons.length > 1) {
+                    buttons[1].classList.add('selected'); 
+                    if (selectorElement.id === 'priority-selector') {
+                        selectedPriority = 'สำคัญแต่ไม่เร่งด่วน';
+                    }
+                }
+            }
+            
+            async function getAiSuggestions() {
+                const taskInput = document.getElementById('task-input');
+                const projectInput = document.getElementById('project-input');
+                const endDateInput = document.getElementById('end-date-input');
+                const prioritySelector = document.getElementById('priority-selector');
+                const mainTask = taskInput.value.trim();
+                if (!mainTask) return;
+                projectInput.placeholder = 'AI กำลังคิด...';
+                try {
+                    const newTaskData = { task: mainTask, endDate: endDateInput.value };
+                    const existingTasksForAI = allTasks.map(t => ({ task: t.task, project: t.project, priority: t.priority, endDate: t.endDate }));
+                    const response = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'getAiSuggestions', newTaskData, existingTasks: existingTasksForAI })
+                    });
+                    const result = await response.json();
+                    if (result.status === 'success') {
+                        projectInput.value = result.projectName;
+                        updateProjectColorIndicator(result.projectName);
+                        if (result.suggestedPriority) {
+                            updatePrioritySelectionUI(prioritySelector, result.suggestedPriority);
+                            selectedPriority = result.suggestedPriority;
+                        }
+                    } else { throw new Error(result.message); }
+                } catch(error) {
+                    console.error('AI suggestions error:', error);
+                    projectInput.placeholder = 'AI ไม่สามารถแนะนำได้';
+                }
+            }
+
+            function updateProjectColorIndicator(projectName) {
+                const projectColorIndicator = document.getElementById('project-color-indicator');
+                if(projectColorIndicator) {
+                    const colorClass = getProjectColorClass(projectName);
+                    projectColorIndicator.className = `project-color-dot mr-2 ${colorClass}`;
+                }
+            }
+            
+            async function handleAIBreakdown() {
+                const taskInput = document.getElementById('task-input');
+                const mainTask = taskInput.value.trim();
+                if (!mainTask) {
+                    showMessage(errorDiv, 'กรุณาพิมพ์งานที่ต้องการให้ AI ช่วยแตกงานย่อย');
+                    return;
+                }
+                const aiSuggestionsContainer = document.getElementById('ai-suggestions');
+                aiSuggestionsContainer.innerHTML = '<p class="text-center text-purple-600">AI กำลังคิด... ✨</p>';
+                showModal(aiModal);
+                try {
+                    const response = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'generateSubtasks', prompt: mainTask })
+                    });
+                    const result = await response.json();
+                    if (result.status === 'success' && Array.isArray(result.suggestions)) {
+                        populateAIModal(result.suggestions);
+                    } else {
+                        throw new Error(result.message || 'AI ไม่สามารถให้คำแนะนำได้');
+                    }
+                } catch (error) {
+                    aiSuggestionsContainer.innerHTML = `<p class="text-center text-red-600">เกิดข้อผิดพลาด: ${error.message}</p>`;
+                }
+            }
+
+            function populateAIModal(suggestions) {
+                const aiSuggestionsContainer = document.getElementById('ai-suggestions');
+                aiSuggestionsContainer.innerHTML = '';
+                if (!suggestions.length) {
+                    aiSuggestionsContainer.innerHTML = '<p class="text-center text-gray-500">AI ไม่พบขั้นตอนย่อย</p>';
+                    return;
+                }
+                suggestions.forEach((suggestion, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'flex items-center justify-between bg-gray-50 p-2 rounded-md';
+                    const labelWrapper = document.createElement('div');
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = `suggestion-${index}`;
+                    checkbox.dataset.suggestion = JSON.stringify(suggestion);
+                    checkbox.checked = true;
+                    checkbox.className = 'h-5 w-5 rounded border-gray-300 text-purple-600';
+                    const label = document.createElement('label');
+                    label.htmlFor = `suggestion-${index}`;
+                    label.textContent = suggestion.task;
+                    label.className = 'ml-3 block text-sm font-medium text-gray-700';
+                    labelWrapper.appendChild(checkbox);
+                    labelWrapper.appendChild(label);
+                    const durationText = document.createElement('span');
+                    durationText.className = 'text-sm text-gray-500 font-mono';
+                    durationText.textContent = `${suggestion.duration} นาที`;
+                    div.appendChild(labelWrapper);
+                    div.appendChild(durationText);
+                    aiSuggestionsContainer.appendChild(div);
+                });
+            }
+            
+            async function handleAddSelectedAISuggestions() {
+                const initialStartDate = document.getElementById('ai-start-date').value;
+                const initialStartTime = document.getElementById('ai-start-time').value;
+                const projectInput = document.getElementById('project-input');
+                const projectName = projectInput.value.trim();
+                if (!initialStartDate || !initialStartTime || !projectName) {
+                    showMessage(errorDiv, "กรุณาเลือกโปรเจกต์ วันที่ และเวลาเริ่มต้นก่อน");
+                    return;
+                }
+                const aiSuggestionsContainer = document.getElementById('ai-suggestions');
+                const selectedSuggestions = [];
+                aiSuggestionsContainer.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
+                    selectedSuggestions.push(JSON.parse(checkbox.dataset.suggestion));
+                });
+                if (selectedSuggestions.length === 0) {
+                    hideModal(aiModal);
+                    return;
+                }
+                let currentDateTime = new Date(`${initialStartDate}T${initialStartTime}`);
+                const proposedSchedule = [];
+                selectedSuggestions.forEach(suggestion => {
+                    const startDateTime = new Date(currentDateTime.getTime());
+                    const endDateTime = calculateEndTimeWithBreaks(startDateTime, suggestion.duration);
+                    proposedSchedule.push({
+                        project: projectName,
+                        task: suggestion.task,
+                        startDate: formatDate(startDateTime),
+                        endDate: formatDate(endDateTime),
+                        startTime: formatTime(startDateTime),
+                        endTime: formatTime(endDateTime),
+                        priority: selectedPriority,
+                        isKeyEvent: false,
+                        status: 'ต้องทำ',
+                        note: ''
+                    });
+                    currentDateTime = new Date(endDateTime.getTime() + 60000); // Add 1 min break
+                });
+                await processTaskAddition(proposedSchedule);
+                hideModal(aiModal);
+            }
+            
+            async function processTaskAddition(tasksToAdd) {
+                const tempTasks = tasksToAdd.map(task => ({
+                    ...task,
+                    rowId: `temp-${Date.now()}-${Math.random()}`,
+                    isOptimistic: true 
+                }));
+
+                allTasks.push(...tempTasks);
+                tasksToAdd.forEach(task => getProjectColorClass(task.project || task.task));
+                renderCurrentView(); 
+
+                document.getElementById('task-form').reset();
+                document.getElementById('project-input').value = '';
+                setDefaultDateTime();
+
+                try {
+                    const response = await fetch(SCRIPT_URL, { 
+                        method: 'POST', 
+                        body: JSON.stringify({ action: 'createMultiple', tasks: tasksToAdd }) 
+                    });
+                    const result = await response.json();
+                    if (result.status === 'success') {
+                        showMessage(successDiv, "เพิ่มรายการสำเร็จ");
+                        await fetchAllData();
+                    } else {
+                        throw new Error(result.message);
+                    }
+                } catch (error) {
+                    showMessage(errorDiv, `เกิดข้อผิดพลาดในการเพิ่มข้อมูล: ${error.message}`);
+                    allTasks = allTasks.filter(task => !task.isOptimistic);
+                    renderCurrentView();
+                }
+            }
+            
+            function setDefaultDateTime() {
+                const startDateInput = document.getElementById('start-date-input');
+                const endDateInput = document.getElementById('end-date-input');
+                const startTimeInput = document.getElementById('start-time-input');
+                const endTimeInput = document.getElementById('end-time-input');
+                const aiStartDate = document.getElementById('ai-start-date');
+                const aiStartTime = document.getElementById('ai-start-time');
+                
+                const now = new Date();
+                const today = formatDate(now);
+                const currentTime = formatTime(now);
+                
+                if(startDateInput) startDateInput.value = today;
+                if(endDateInput) endDateInput.value = today;
+                if(startTimeInput) startTimeInput.value = currentTime;
+                if(endTimeInput) endTimeInput.value = currentTime;
+                if(aiStartDate) aiStartDate.value = today;
+                if(aiStartTime) aiStartTime.value = currentTime;
+            }
+
+            function attachFormEventListeners() {
+                const taskForm = document.getElementById('task-form');
+                if(!taskForm) return;
+
+                const taskInput = document.getElementById('task-input');
+                const aiBreakdownBtn = document.getElementById('ai-breakdown-btn');
+                const projectInput = document.getElementById('project-input');
+                const prioritySelector = document.getElementById('priority-selector');
+
+                if (taskInput) taskInput.addEventListener('blur', getAiSuggestions);
+                if (projectInput) projectInput.addEventListener('input', () => updateProjectColorIndicator(projectInput.value));
+                if (aiBreakdownBtn) aiBreakdownBtn.addEventListener('click', handleAIBreakdown);
+                if(prioritySelector) {
+                    prioritySelector.addEventListener('click', (e) => {
+                        const button = e.target.closest('.priority-btn');
+                        if(button) {
+                            prioritySelector.querySelectorAll('.priority-btn').forEach(btn => btn.classList.remove('selected'));
+                            button.classList.add('selected');
+                            selectedPriority = button.dataset.priority;
+                        }
+                    });
+                }
+                
+                taskForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const newTask = {
+                        project: document.getElementById('project-input').value,
+                        task: document.getElementById('task-input').value,
+                        priority: selectedPriority,
+                        startDate: document.getElementById('start-date-input').value,
+                        endDate: document.getElementById('end-date-input').value,
+                        startTime: document.getElementById('start-time-input').value,
+                        endTime: document.getElementById('end-time-input').value,
+                        isKeyEvent: document.getElementById('is-key-event-checkbox').checked,
+                        note: document.getElementById('note-input').value.trim(),
+                        status: 'ต้องทำ'
+                    };
+                    
+                    const newStart = `${newTask.startDate}T${newTask.startTime}`;
+                    const newEnd = `${newTask.endDate}T${newTask.endTime}`;
+                    const conflictingTask = allTasks.find(t => t.rowId != newTask.rowId && isOverlapping(newStart, newEnd, `${t.startDate}T${t.startTime}`, `${t.endDate}T${t.endTime}`));
+
+                    if (conflictingTask) {
+                        conflictingTaskData = newTask;
+                        document.getElementById('conflict-modal-text').innerHTML = `
+                            <p>งานใหม่: <strong>${newTask.task}</strong></p>
+                            <p>เวลา: ${newTask.startTime} - ${newTask.endTime}</p>
+                            <p class="mt-2">ซ้อนทับกับ:</p>
+                            <p><strong>${conflictingTask.task}</strong> (${conflictingTask.startTime} - ${conflictingTask.endTime})</p>
+                        `;
+                        showModal(conflictModal);
+                    } else {
+                         await processTaskAddition([newTask]);
+                    }
+                });
+            }
+            
+            async function getAIAnalysis(view, tasks, goals) {
+                const contentDiv = document.getElementById('ai-analysis-content');
+                const actionsDiv = document.getElementById('ai-analysis-actions');
+
+                if (tasks.length === 0 && goals.length === 0) {
+                    contentDiv.innerHTML = '<p class="text-gray-500">ไม่มีข้อมูลงานหรือเป้าหมายสำหรับวิเคราะห์</p>';
+                    return;
+                }
+
+                contentDiv.innerHTML = '<p class="text-purple-600 animate-pulse">AI กำลังวิเคราะห์... ✨</p>';
+                actionsDiv.classList.add('hidden');
+
+                try {
+                    const response = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'getLifeAnalysis', view: view, tasks: tasks, goals: goals })
+                    });
+                    const result = await response.json();
+                    if (result.status === 'success') {
+                        const analysisContainer = document.createElement('div');
+                        analysisContainer.className = 'text-left whitespace-pre-wrap w-full';
+                        analysisContainer.innerText = result.analysis;
+                        contentDiv.innerHTML = '';
+                        contentDiv.appendChild(analysisContainer);
+
+                        actionsDiv.classList.remove('hidden');
+                        const saveBtn = document.getElementById('save-analysis-btn');
+                        saveBtn.onclick = () => saveAIAnalysis(result.analysis, view);
+                        saveBtn.textContent = 'บันทึกคำแนะนำ';
+                        saveBtn.disabled = false;
+
+                    } else {
+                        throw new Error(result.message);
+                    }
+                } catch (error) {
+                    contentDiv.innerHTML = `<p class="text-red-600">เกิดข้อผิดพลาด: ${error.message}</p>`;
+                }
+            }
+
+            async function saveAIAnalysis(analysisText, view) {
+                const saveBtn = document.getElementById('save-analysis-btn');
+                const originalText = saveBtn.textContent;
+                saveBtn.textContent = 'กำลังบันทึก...';
+                saveBtn.disabled = true;
+
+                try {
+                    const response = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'saveRecommendation', analysisText: analysisText, viewType: view })
+                    });
+                    const result = await response.json();
+                    if (result.status === 'success') {
+                        showMessage(successDiv, "บันทึกคำแนะนำสำเร็จ!");
+                        saveBtn.textContent = 'บันทึกแล้ว';
+                    } else {
+                        throw new Error(result.message);
+                    }
+                } catch (error) {
+                    showMessage(errorDiv, `เกิดข้อผิดพลาดในการบันทึก: ${error.message}`);
+                    saveBtn.textContent = originalText;
+                    saveBtn.disabled = false;
+                }
+            }
+
+            // --- GOAL FUNCTIONS ---
+            window.openGoalModal = (goal = null) => {
+                const form = document.getElementById('goal-form');
+                form.reset();
+                document.getElementById('ai-goal-suggestion-area').classList.add('hidden');
+                if (goal) {
+                    document.getElementById('goal-modal-title').textContent = 'แก้ไขเป้าหมาย';
+                    document.getElementById('goal-row-id').value = goal.rowId;
+                    document.getElementById('goal-title-input').value = goal.title;
+                    document.getElementById('goal-description-input').value = goal.description;
+                    document.getElementById('goal-time-horizon-select').value = goal.timeHorizon;
+                } else {
+                    document.getElementById('goal-modal-title').textContent = 'เพิ่มเป้าหมายใหม่';
+                    document.getElementById('goal-row-id').value = '';
+                }
+                showModal(goalModal);
+            }
+
+            window.handleDeleteGoal = (rowId) => {
+                taskToDeleteId = null;
+                goalToDeleteId = rowId;
+                document.getElementById('confirm-modal-text').textContent = 'คุณแน่ใจหรือไม่ว่าต้องการลบเป้าหมายนี้?';
+                showModal(confirmModal);
+            };
+
+            const renderGoalsView = () => {
+                viewHeader.innerHTML = `
+                    <h2 class="text-2xl font-bold text-gray-700">เป้าหมายทั้งหมด</h2>
+                    <button onclick="openGoalModal()" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition">
+                        + เพิ่มเป้าหมาย
+                    </button>
+                `;
+                let html = '<div class="space-y-4">';
+                if (allGoals.length > 0) {
+                    allGoals.forEach(goal => {
+                        html += `
+                            <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-yellow-400">
+                               <div class="flex justify-between items-start">
+                                    <div class="flex-grow">
+                                        <p class="font-bold text-lg text-gray-800">${goal.title}</p>
+                                        <p class="text-sm text-gray-500 mt-1">${goal.timeHorizon}</p>
+                                        <p class="text-gray-600 mt-2 whitespace-pre-wrap">${goal.description}</p>
+                                    </div>
+                                    <div class="flex flex-col gap-2 ml-4">
+                                        <button class="font-semibold py-1 px-3 rounded-md transition-colors duration-200 text-sm bg-gray-100 text-gray-700 hover:bg-gray-200" onclick='openGoalModal(${JSON.stringify(goal)})'>แก้ไข</button>
+                                        <button class="font-semibold py-1 px-3 rounded-md transition-colors duration-200 text-sm bg-red-100 text-red-700 hover:bg-red-200" onclick="handleDeleteGoal(${goal.rowId})">ลบ</button>
+                                    </div>
+                               </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    html += '<p class="text-center text-gray-500 py-8">ยังไม่มีการตั้งเป้าหมาย</p>';
+                }
+                html += '</div>';
+                taskListContainer.innerHTML = html;
+            };
+
+            async function handleGoalFormSubmit(e) {
+                e.preventDefault();
+                const rowId = document.getElementById('goal-row-id').value;
+                const goalData = {
+                    title: document.getElementById('goal-title-input').value,
+                    description: document.getElementById('goal-description-input').value,
+                    timeHorizon: document.getElementById('goal-time-horizon-select').value,
+                };
+
+                const action = rowId ? 'updateGoal' : 'createGoal';
+                if (rowId) goalData.rowId = rowId;
+
+                try {
+                    const response = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action, ...goalData })
+                    });
+                    const result = await response.json();
                     if (result.status !== 'success') throw new Error(result.message);
-                    showMessage(successDiv, 'บันทึกการแก้ไขสำเร็จ');
-                    hideModal(editModal);
+                    
+                    showMessage(successDiv, `บันทึกเป้าหมายสำเร็จ`);
+                    hideModal(goalModal);
                     await fetchAllData();
                 } catch (error) {
                     showMessage(errorDiv, `เกิดข้อผิดพลาด: ${error.message}`);
                 }
-            });
-            document.getElementById('edit-priority-selector').addEventListener('click', (e) => {
-                const button = e.target.closest('.priority-btn');
-                if(button) {
-                     document.getElementById('edit-priority-selector').querySelectorAll('.priority-btn').forEach(btn => btn.classList.remove('selected'));
-                     button.classList.add('selected');
-                }
-            });
+            }
 
-            document.getElementById('confirm-modal-cancel-btn').addEventListener('click', () => {
-                hideModal(confirmModal);
-                taskToDeleteId = null;
-                goalToDeleteId = null;
-            });
-            document.getElementById('confirm-modal-confirm-btn').addEventListener('click', async () => {
-                hideModal(confirmModal);
-                if (taskToDeleteId !== null) {
+            async function handleGetSmartGoal() {
+                const draftTitle = document.getElementById('goal-title-input').value;
+                const draftDescription = document.getElementById('goal-description-input').value;
+                const timeHorizon = document.getElementById('goal-time-horizon-select').value;
+                const suggestionArea = document.getElementById('ai-goal-suggestion-area');
+
+                if (!draftTitle) {
+                    showMessage(errorDiv, "กรุณาพิมพ์เป้าหมายร่างแรกก่อน");
+                    return;
+                }
+
+                suggestionArea.classList.remove('hidden');
+                suggestionArea.innerHTML = '<p class="text-purple-600 animate-pulse text-center">AI กำลังคิด... ✨</p>';
+
+                try {
+                     const response = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'getSmartGoalSuggestion', draftTitle, draftDescription, timeHorizon })
+                    });
+                    const result = await response.json();
+                    if (result.status !== 'success') throw new Error(result.message);
+
+                    const suggestion = result.suggestion;
+                    suggestionArea.innerHTML = `
+                        <p class="font-bold text-sm text-gray-700">AI แนะนำ:</p>
+                        <p class="mt-2 p-2 bg-white rounded"><b>ชื่อเป้าหมาย:</b> ${suggestion.suggestedTitle}</p>
+                        <p class="mt-2 p-2 bg-white rounded"><b>คำอธิบาย:</b> ${suggestion.suggestedDescription}</p>
+                        <div class="text-center mt-3">
+                            <button type="button" id="use-ai-suggestion-btn" class="text-sm bg-purple-200 text-purple-800 font-semibold py-1 px-3 rounded-lg hover:bg-purple-300">
+                                M ใช้ข้อแนะนำนี้
+                            </button>
+                        </div>
+                    `;
+
+                    document.getElementById('use-ai-suggestion-btn').addEventListener('click', () => {
+                        document.getElementById('goal-title-input').value = suggestion.suggestedTitle;
+                        document.getElementById('goal-description-input').value = suggestion.suggestedDescription;
+                        suggestionArea.classList.add('hidden');
+                    });
+
+                } catch(error) {
+                    suggestionArea.innerHTML = `<p class="text-red-600 text-center">เกิดข้อผิดพลาด: ${error.message}</p>`;
+                }
+            }
+
+
+            // --- Main Initialization on App Load ---
+            (async () => {
+                loadingDiv = document.getElementById('loading');
+                errorDiv = document.getElementById('error');
+                successDiv = document.getElementById('success');
+                viewSwitcher = document.getElementById('view-switcher');
+                viewHeader = document.getElementById('view-header');
+                taskListContainer = document.getElementById('task-list-container');
+                addTaskWrapper = document.getElementById('add-task-wrapper');
+                templates = document.getElementById('templates');
+                aiModal = document.getElementById('ai-modal');
+                editModal = document.getElementById('edit-modal');
+                confirmModal = document.getElementById('confirm-modal');
+                conflictModal = document.getElementById('conflict-modal');
+                goalModal = document.getElementById('goal-modal');
+
+                const formTemplate = templates.querySelector('#add-task-container-template');
+                if (formTemplate) {
+                    addTaskWrapper.innerHTML = formTemplate.innerHTML;
+                    attachFormEventListeners();
+                    setDefaultDateTime();
+                } else {
+                    console.error("Add task container template not found!");
+                }
+                
+                viewSwitcher.addEventListener('click', (e) => {
+                    const button = e.target.closest('button');
+                    if (button) {
+                        currentView = button.dataset.view;
+                        currentDateForView = new Date();
+                        dailyViewCurrentPage = 1; 
+                        viewSwitcher.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        renderCurrentView();
+                    }
+                });
+
+                // --- ALL MODAL EVENT LISTENERS ---
+                document.getElementById('ai-cancel-btn').addEventListener('click', () => hideModal(aiModal));
+                document.getElementById('ai-add-selected-btn').addEventListener('click', handleAddSelectedAISuggestions);
+
+                document.getElementById('edit-cancel-btn').addEventListener('click', () => hideModal(editModal));
+                document.getElementById('edit-task-form').addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const rowId = document.getElementById('edit-row-id').value;
+                    const selectedButton = document.getElementById('edit-priority-selector').querySelector('.selected');
+                    const updatedData = {
+                        project: document.getElementById('edit-project-input').value,
+                        task: document.getElementById('edit-task-input').value,
+                        priority: selectedButton ? selectedButton.dataset.priority : 'สำคัญแต่ไม่เร่งด่วน',
+                        startDate: document.getElementById('edit-start-date-input').value,
+                        endDate: document.getElementById('edit-end-date-input').value,
+                        startTime: document.getElementById('edit-start-time-input').value,
+                        endTime: document.getElementById('edit-end-time-input').value,
+                        status: document.getElementById('edit-status').value,
+                        isKeyEvent: document.getElementById('edit-is-key-event-checkbox').checked,
+                        note: document.getElementById('edit-note-input').value.trim()
+                    };
                     try {
                         const response = await fetch(SCRIPT_URL, {
                             method: 'POST',
-                            body: JSON.stringify({ action: 'delete', rowId: taskToDeleteId })
+                            body: JSON.stringify({ 
+                                action: 'update', 
+                                rowId, 
+                                ...updatedData
+                            })
                         });
                         const result = await response.json();
                         if (result.status !== 'success') throw new Error(result.message);
-                        showMessage(successDiv, 'ลบรายการสำเร็จ');
+                        showMessage(successDiv, 'บันทึกการแก้ไขสำเร็จ');
+                        hideModal(editModal);
                         await fetchAllData();
                     } catch (error) {
                         showMessage(errorDiv, `เกิดข้อผิดพลาด: ${error.message}`);
-                        await fetchAllData(); // Re-fetch to restore state on error
-                    } finally {
-                        taskToDeleteId = null;
                     }
-                } else if (goalToDeleteId !== null) {
-                    try {
-                        const response = await fetch(SCRIPT_URL, {
-                            method: 'POST',
-                            body: JSON.stringify({ action: 'deleteGoal', rowId: goalToDeleteId })
-                        });
-                        const result = await response.json();
-                        if (result.status !== 'success') throw new Error(result.message);
-                        showMessage(successDiv, 'ลบเป้าหมายสำเร็จ');
-                        await fetchAllData();
-                    } catch(error) {
-                        showMessage(errorDiv, `เกิดข้อผิดพลาด: ${error.message}`);
-                        await fetchAllData();
-                    } finally {
-                        goalToDeleteId = null;
+                });
+                document.getElementById('edit-priority-selector').addEventListener('click', (e) => {
+                    const button = e.target.closest('.priority-btn');
+                    if(button) {
+                         document.getElementById('edit-priority-selector').querySelectorAll('.priority-btn').forEach(btn => btn.classList.remove('selected'));
+                         button.classList.add('selected');
                     }
-                }
-            });
+                });
 
-            document.getElementById('conflict-cancel-btn').addEventListener('click', () => { hideModal(conflictModal); conflictingTaskData = null; });
-            document.getElementById('conflict-overlap-btn').addEventListener('click', async () => { if (conflictingTaskData) { await processTaskAddition([conflictingTaskData]); conflictingTaskData = null; hideModal(conflictModal); } });
-            document.getElementById('conflict-find-next-btn').addEventListener('click', () => { if (conflictingTaskData) { const originalStart = new Date(`${conflictingTaskData.startDate}T${conflictingTaskData.startTime}`); const originalEnd = new Date(`${conflictingTaskData.endDate}T${conflictingTaskData.endTime}`); const durationMs = originalEnd - originalStart; const conflictingTask = allTasks.find(t => isOverlapping(originalStart.toISOString(), originalEnd.toISOString(), `${t.startDate}T${t.startTime}`, `${t.endDate}T${t.endTime}`)); const nextAvailableStart = new Date(new Date(`${conflictingTask.endDate}T${conflictingTask.endTime}`).getTime() + 60000); const nextAvailableEnd = new Date(nextAvailableStart.getTime() + durationMs); document.getElementById('start-date-input').value = formatDate(nextAvailableStart); document.getElementById('start-time-input').value = formatTime(nextAvailableStart); document.getElementById('end-date-input').value = formatDate(nextAvailableEnd); document.getElementById('end-time-input').value = formatTime(nextAvailableEnd); showMessage(successDiv, 'ได้หาเวลาที่ว่างถัดไปให้แล้ว กรุณาตรวจสอบและกด "เพิ่ม" อีกครั้ง'); conflictingTaskData = null; hideModal(conflictModal); } });
-            
-            // Goal Modal Listeners
-            document.getElementById('goal-cancel-btn').addEventListener('click', () => hideModal(goalModal));
-            document.getElementById('goal-form').addEventListener('submit', handleGoalFormSubmit);
-            document.getElementById('smart-goal-btn').addEventListener('click', handleGetSmartGoal);
+                document.getElementById('confirm-modal-cancel-btn').addEventListener('click', () => {
+                    hideModal(confirmModal);
+                    taskToDeleteId = null;
+                    goalToDeleteId = null;
+                });
+                document.getElementById('confirm-modal-confirm-btn').addEventListener('click', async () => {
+                    hideModal(confirmModal);
+                    if (taskToDeleteId !== null) {
+                        try {
+                            const response = await fetch(SCRIPT_URL, {
+                                method: 'POST',
+                                body: JSON.stringify({ action: 'delete', rowId: taskToDeleteId })
+                            });
+                            const result = await response.json();
+                            if (result.status !== 'success') throw new Error(result.message);
+                            showMessage(successDiv, 'ลบรายการสำเร็จ');
+                            await fetchAllData();
+                        } catch (error) {
+                            showMessage(errorDiv, `เกิดข้อผิดพลาด: ${error.message}`);
+                            await fetchAllData(); // Re-fetch to restore state on error
+                        } finally {
+                            taskToDeleteId = null;
+                        }
+                    } else if (goalToDeleteId !== null) {
+                        try {
+                            const response = await fetch(SCRIPT_URL, {
+                                method: 'POST',
+                                body: JSON.stringify({ action: 'deleteGoal', rowId: goalToDeleteId })
+                            });
+                            const result = await response.json();
+                            if (result.status !== 'success') throw new Error(result.message);
+                            showMessage(successDiv, 'ลบเป้าหมายสำเร็จ');
+                            await fetchAllData();
+                        } catch(error) {
+                            showMessage(errorDiv, `เกิดข้อผิดพลาด: ${error.message}`);
+                            await fetchAllData();
+                        } finally {
+                            goalToDeleteId = null;
+                        }
+                    }
+                });
 
-            await fetchAllData();
-        });
+                document.getElementById('conflict-cancel-btn').addEventListener('click', () => { hideModal(conflictModal); conflictingTaskData = null; });
+                document.getElementById('conflict-overlap-btn').addEventListener('click', async () => { if (conflictingTaskData) { await processTaskAddition([conflictingTaskData]); conflictingTaskData = null; hideModal(conflictModal); } });
+                document.getElementById('conflict-find-next-btn').addEventListener('click', () => { if (conflictingTaskData) { const originalStart = new Date(`${conflictingTaskData.startDate}T${conflictingTaskData.startTime}`); const originalEnd = new Date(`${conflictingTaskData.endDate}T${conflictingTaskData.endTime}`); const durationMs = originalEnd - originalStart; const conflictingTask = allTasks.find(t => isOverlapping(originalStart.toISOString(), originalEnd.toISOString(), `${t.startDate}T${t.startTime}`, `${t.endDate}T${t.endTime}`)); const nextAvailableStart = new Date(new Date(`${conflictingTask.endDate}T${conflictingTask.endTime}`).getTime() + 60000); const nextAvailableEnd = new Date(nextAvailableStart.getTime() + durationMs); document.getElementById('start-date-input').value = formatDate(nextAvailableStart); document.getElementById('start-time-input').value = formatTime(nextAvailableStart); document.getElementById('end-date-input').value = formatDate(nextAvailableEnd); document.getElementById('end-time-input').value = formatTime(nextAvailableEnd); showMessage(successDiv, 'ได้หาเวลาที่ว่างถัดไปให้แล้ว กรุณาตรวจสอบและกด "เพิ่ม" อีกครั้ง'); conflictingTaskData = null; hideModal(conflictModal); } });
+                
+                // Goal Modal Listeners
+                document.getElementById('goal-cancel-btn').addEventListener('click', () => hideModal(goalModal));
+                document.getElementById('goal-form').addEventListener('submit', handleGoalFormSubmit);
+                document.getElementById('smart-goal-btn').addEventListener('click', handleGetSmartGoal);
+
+                await fetchAllData();
+            })();
+        }
     </script>
 </body>
 </html>
